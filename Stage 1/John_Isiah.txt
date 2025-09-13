@@ -1,2 +1,5 @@
-Chosen ....
-....
+The Classes I've chosen to work are"
+- Gym Management (Class: Gym)
+- Payment(Class: Payment)
+- Receipt(Class: Receipt
+- Membership(Class: Membership)
