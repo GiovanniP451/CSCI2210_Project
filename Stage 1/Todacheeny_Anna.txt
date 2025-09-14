@@ -1,1 +1,5 @@
- . . .
+The classes I will be working on are:
+
+- Class
+- Facility
+- Staff
