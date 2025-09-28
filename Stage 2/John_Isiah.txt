@@ -1,0 +1,8 @@
+I have worked on these, adding any necessary attributes and methods for each one:
+Class:Gym
+
+Class:Membership
+
+Class:Payment
+
+Class:Receipt
