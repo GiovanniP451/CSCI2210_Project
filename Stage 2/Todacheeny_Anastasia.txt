@@ -1,3 +1,5 @@
 I have worked on the following classes on the UML diagram:
 
-- 
+- Class 
+- Facility
+- Staff
