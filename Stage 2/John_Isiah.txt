@@ -1,4 +1,4 @@
-I have worked on these, adding any necessary attributes and methods for each one:
+I have worked on these, adding any necessary attributes and methods for each one in the UML Diagram:
 Class:Gym
 
 Class:Membership
@@ -6,3 +6,8 @@ Class:Membership
 Class:Payment
 
 Class:Receipt
+
+Class:Menu (I have created this class during Stage 2 to handle all the menus in our system, also added the methods needed for this)
+
+
+Class:Item (I have created this class during Stage 2 to be use with the inventory class, I have also added the methods and variables needed for this, however I will not be working on this class, this will be assign to someone else to code)
