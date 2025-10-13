@@ -1,0 +1,4 @@
+- I have worked on creating paths for the UML diagram
+- addition of the management class. 
+- Created methods and instance variables outlined to Gym, Menu, Inventory, Membership, and Staff
+- Ensured that UML diagram followed prompt listed in Stage 1. 
