@@ -5,6 +5,12 @@
 public class Membership {
     private String type;
     private double cost;
+    
+    public Membership(String type, double cost)
+    {
+        this.type = type;
+        this.cost = cost;
+    }
 
     public String getType() {
         return type;

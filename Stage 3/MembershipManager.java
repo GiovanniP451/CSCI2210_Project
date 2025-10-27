@@ -2,6 +2,7 @@
 
 @Author Isiah John
 */
+import java.util.Scanner;
 import java.util.ArrayList;
 
 public class MembershipManager {
@@ -10,56 +11,90 @@ public class MembershipManager {
     public MembershipManager()
     {
         memberships = new ArrayList<>();
+        defaultMemberships();
     }
     
-    public void createMembership(String type, double cost)
+    public void defaultMemberships()
     {
-        if(findMembership(type) != null)
-        {
-            System.out.println("Membership Type: " + type + " already exists.");
-            return;
-        }
-        Membership m = new Membership();
-        m.setType(type);
-        m.setCost(cost);
-        memberships.add(m);
+        memberships.add(new Membership("Basic", 19.99));
+        memberships.add(new Membership("Premium", 39.99));
+    }
+    
+    public void createMembership(Membership membership)
+    {
+        memberships.add(membership);
+        System.out.println("Added Membership: " + membership.getType());
     }
     
     public Membership findMembership(String type)
     {
         for(Membership m : memberships)
         {
-            if(m.getType().equals(type))
+            if(m.getType().equalsIgnoreCase(type))
                 return m;
         }
         return null;
     }
     
-    public void updateMembership(String type, String newType, double newCost)
+    public void updateMembership(String type)
     {
         Membership m = findMembership(type);
-        if(m != null)
+        if(m == null)
         {
-            if(newType != null) 
-                m.setType(newType);
-            if(newCost >= 0)
-                m.setCost(newCost);
+            System.out.println("Membership: " + type + " was not found");
+            return;
         }
-        else
+        
+        Scanner input = new Scanner(System.in);
+        
+        System.out.println("Editing Membership: " + m.getType());
+        System.out.println("1. Change cost");
+        System.out.println("2. Change name");
+        System.out.println("3. Change Both");
+        System.out.println("Choice: ");
+        int choice = input.nextInt();
+        input.nextLine();
+        
+        switch(choice)
         {
-            System.out.println("Membership type not found: " + type);
+            case 1:
+                System.out.println("Enter new cost: ");
+                double newCost = input.nextDouble();
+                m.setCost(newCost);
+                System.out.println("Cost Updated");
+                break;
+            case 2:
+                System.out.println("Enter new name: ");
+                String newName = input.nextLine();
+                m.setType(newName);
+                System.out.println("Name Changed");
+                break;
+            case 3:
+                System.out.println("Enter new name: ");
+                String bName = input.nextLine();
+                System.out.println("Enter new cost: ");
+                double bCost = input.nextDouble();
+                m.setType(bName);
+                m.setCost(bCost);
+                System.out.println("Name and Cost was Updated");
+                break;
+            default:
+                System.out.println("Invalid Choice.");
         }
     }
     
-    public boolean removeMembership(String type)
+    public void removeMembership(String type)
     {
         Membership m = findMembership(type);
         if(m != null)
         {
             memberships.remove(m);
-            return true;
+            System.out.println("Membership Removed");
         }
-        return false;
+        else
+        {
+            System.out.println("Membership: " + type + " not found");
+        }
     }
     
     public void listMemberships()
