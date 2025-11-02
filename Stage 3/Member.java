@@ -32,15 +32,14 @@ public class Member {
     }
     
    
-    public String setUsername(String username) {
+    public void setUsername(String username) {
         this.username = username;
     }
     
-    public String setPassword(String password) {
+    public void setPassword(String password) {
     	this.password = password; 
     }
     
     
     
 }
-
