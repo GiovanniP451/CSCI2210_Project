@@ -1,3 +1,6 @@
+//Author: Giovanni Pernudi
+
+
 public class Member {
    
 	

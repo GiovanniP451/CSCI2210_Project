@@ -1,4 +1,4 @@
-package csci2210;
+Author: Giovanni Pernudi 
 
 public class Item {
 	
