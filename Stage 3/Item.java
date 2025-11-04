@@ -1,4 +1,4 @@
-Author: Giovanni Pernudi 
+//Author: Giovanni Pernudi 
 
 public class Item {
 	
