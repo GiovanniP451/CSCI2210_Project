@@ -48,4 +48,4 @@ public class Membership {
     	this.cost = 0.0;
     	this.benefits = null;
     	}
-
+}
