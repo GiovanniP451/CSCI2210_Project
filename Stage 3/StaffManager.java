@@ -33,67 +33,6 @@ public class StaffManager {
         }
     }
     
-    public void editStaff(String name)
-    {
-        Staff staff = findStaff(name);
-        if(staff == null)
-        {
-            System.out.println("No Staff member was found");
-            return;
-        }
-        
-        Scanner input = new Scanner(System.in);
-        System.out.println("Editing Staff Member: '" + staff.getName() + "'");
-        System.out.println("1. Change Name");
-        System.out.println("2. Change Username");
-        System.out.println("3. Change Password");
-        System.out.println("4. Change All");
-        System.out.print("Choice: ");
-        int choice = input.nextInt();
-        
-        switch(choice)
-        {
-            case 1: 
-            {
-                System.out.print("Enter New Name: ");
-                String newName = input.nextLine();
-                staff.setName(newName);
-                System.out.println("Name Updated Successfully");
-                break;
-            }
-            case 2:
-            {
-               System.out.print("Enter New Username: ");
-               String newUsername = input.nextLine();
-               staff.setUsername(newUsername);
-               System.out.println("Username Updated Successfully");
-               break;
-            }
-            case 3:
-            {
-                System.out.print("Enter New Password: ");
-                String newPassword = input.nextLine();
-                staff.setPassword(newPassword);
-                System.out.println("Password updated successfully");
-            }
-            case 4:
-            {
-                System.out.print("Enter New Name: ");
-                staff.setName(input.nextLine());
-                System.out.print("Enter New Username: ");
-                staff.setUsername(input.nextLine());
-                System.out.print("Enter New Password: ");
-                staff.setPassword(input.nextLine());
-                System.out.print("All Details Have Been Updated!");
-                
-            }
-            default:
-            {
-                System.out.println("Invalid Choice");
-            }
-        }
-    }
-    
     public Staff findStaff(String name)
     {
         for(Staff s : staffList)
@@ -104,5 +43,45 @@ public class StaffManager {
             }
         }
         return null;
+    }
+    
+    public Staff findStaff(String username, String password)
+    {
+        for(Staff s : staffList)
+        {
+            if(s.getUsername().equalsIgnoreCase(username) && s.getPassword().equals(password));
+            return s;
+        }
+        return null;
+    }
+    
+    public Staff findStaffByUsername(String username)
+    {
+        for(Staff s : staffList)
+        {
+            if(s.getUsername().equalsIgnoreCase(username))
+            {
+                return s;
+            }
+        }
+        return null;
+    }
+    
+    public void listStaff()
+    {
+        if(staffList.isEmpty())
+        {
+            System.out.println("No staff found.");
+            return;
+        }
+        for(Staff s : staffList)
+        {
+            System.out.println("Name: " + s.getName() + " | Username: " + s.getUsername());
+        }
+    }
+    
+    public ArrayList<Staff> getStaffList()
+    {
+        return staffList;
     }
 }
