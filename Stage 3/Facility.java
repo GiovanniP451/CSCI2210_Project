@@ -9,7 +9,7 @@ public class Facility {
     private String facilityName;
     private ArrayList<Area> areas;
     
-    public Facility(String facilityName)
+    public Facility()
     {
         this.facilityName = facilityName;
         this.areas = new ArrayList<>();
@@ -18,21 +18,17 @@ public class Facility {
     public void addArea(String name)
     {
         areas.add(new Area(name));
-        System.out.println("Added area: " + name);
     }
     
-    public void removeArea(String name)
+    public boolean removeArea(String name)
     {
         Area a = findArea(name);
         if(a != null)
         {
             areas.remove(a);
-            System.out.println("Area Removed");
+            return true;
         }
-        else
-        {
-            System.out.println("Area not found");
-        }
+        return false;
     }
     
     public Area findArea(String name)
@@ -52,17 +48,19 @@ public class Facility {
         return facilityName;
     }
     
-    public void listAreas()
+    public ArrayList<Area> getAreas()
     {
-        System.out.println("==== Facility Areas for " + facilityName + " ====");
-        if(areas.isEmpty())
-        {
-            System.out.println("No Areas");
-        }
+        return areas;
+    }
+    
+    public ArrayList<String> getAreaNames()
+    {
+        ArrayList<String> names = new ArrayList<>();
         for(Area a : areas)
         {
-            System.out.println("- " + a.getName());
+            names.add(a.getName());
         }
+        return names;
     }
     
     public Inventory accessInvent(String areaName)
@@ -70,7 +68,6 @@ public class Facility {
         Area a = findArea(areaName);
         if(a == null)
         {
-            System.out.println("Area not found!");
             return null;
         }
         return a.getInventory();

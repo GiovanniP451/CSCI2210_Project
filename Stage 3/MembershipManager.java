@@ -20,10 +20,13 @@ public class MembershipManager {
         memberships.add(new Membership("Premium", 39.99));
     }
     
-    public void createMembership(Membership membership)
+    public boolean createMembership(Membership membership)
     {
-        memberships.add(membership);
-        System.out.println("Added Membership: " + membership.getType());
+        if(membership == null || findMembership(membership.getType()) != null)
+        {
+            return false;
+        }
+        return memberships.add(membership);
     }
     
     public Membership findMembership(String type)
@@ -36,74 +39,41 @@ public class MembershipManager {
         return null;
     }
     
-    public void updateMembership(String type)
+    public boolean updateMembership(String type, String newType, Double newCost)
     {
         Membership m = findMembership(type);
         if(m == null)
         {
-            System.out.println("Membership: " + type + " was not found");
-            return;
+            return false;
         }
-        
-        Scanner input = new Scanner(System.in);
-        
-        System.out.println("Editing Membership: " + m.getType());
-        System.out.println("1. Change cost");
-        System.out.println("2. Change name");
-        System.out.println("3. Change Both");
-        System.out.println("Choice: ");
-        int choice = input.nextInt();
-        input.nextLine();
-        
-        switch(choice)
+        if(newType != null && !newType.isBlank())
         {
-            case 1:
-                System.out.println("Enter new cost: ");
-                double newCost = input.nextDouble();
-                m.setCost(newCost);
-                System.out.println("Cost Updated");
-                break;
-            case 2:
-                System.out.println("Enter new name: ");
-                String newName = input.nextLine();
-                m.setType(newName);
-                System.out.println("Name Changed");
-                break;
-            case 3:
-                System.out.println("Enter new name: ");
-                String bName = input.nextLine();
-                System.out.println("Enter new cost: ");
-                double bCost = input.nextDouble();
-                m.setType(bName);
-                m.setCost(bCost);
-                System.out.println("Name and Cost was Updated");
-                break;
-            default:
-                System.out.println("Invalid Choice.");
+            Membership exist = findMembership(newType);
+            if(exist != null && exist != m)
+            {
+                return false;
+            }
+            m.setType(newType);
         }
+        if(newCost != null)
+        {
+            if(newCost < 0)
+            {
+                return false;
+            }
+            m.setCost(newCost);
+        }
+        return true;
     }
     
-    public void removeMembership(String type)
+    public boolean removeMembership(String type)
     {
         Membership m = findMembership(type);
-        if(m != null)
+        if(m == null)
         {
-            memberships.remove(m);
-            System.out.println("Membership Removed");
+            return false;
         }
-        else
-        {
-            System.out.println("Membership: " + type + " not found");
-        }
-    }
-    
-    public void listMemberships()
-    {
-        System.out.println("Available Membership:");
-        for (Membership m : memberships)
-        {
-            System.out.println("Type: " + m.getType() + " | Cost: $" + m.getCost());
-        }
+        return memberships.remove(m);
     }
     
     public ArrayList<Membership> getMemberships()

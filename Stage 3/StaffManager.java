@@ -4,7 +4,6 @@
  * @author Isiah John
  */
 import java.util.ArrayList;
-import java.util.Scanner;
 
 public class StaffManager {
     private ArrayList<Staff> staffList;
@@ -14,23 +13,23 @@ public class StaffManager {
         this.staffList = new ArrayList<>();
     }
     
-    public void addStaff(Staff staff)
+    public boolean addStaff(Staff staff)
     {
-        staffList.add(staff);
+        if(staff == null || findStaffByUsername(staff.getUsername()) != null)
+        {
+            return false;
+        }
+        return staffList.add(staff);
     }
     
-    public void removeStaff(String name)
+    public boolean removeStaff(String name)
     {
         Staff staff = findStaff(name);
-        if(staff != null)
+        if(staff == null)
         {
-            staffList.remove(staff);
-            System.out.println("Staff Member: '" + staff.getName() + "' removed successfully");
+            return false;
         }
-        else
-        {
-            System.out.println("No Staff Member found with that Name");
-        }
+        return staffList.remove(staff);
     }
     
     public Staff findStaff(String name)
@@ -67,17 +66,30 @@ public class StaffManager {
         return null;
     }
     
-    public void listStaff()
+    public boolean updateStaff(String username, String newName, String newUsername, String newPassword)
     {
-        if(staffList.isEmpty())
+        Staff staff = findStaffByUsername(username);
+        if(staff == null)
         {
-            System.out.println("No staff found.");
-            return;
+            return false;
         }
-        for(Staff s : staffList)
+        if(newName != null && !newName.isBlank())
         {
-            System.out.println("Name: " + s.getName() + " | Username: " + s.getUsername());
+            staff.setName(newName);
         }
+        if(newUsername != null && !newUsername.isBlank() && !newUsername.equalsIgnoreCase(username))
+        {
+            if(findStaffByUsername(newUsername) != null)
+            {
+                return false;
+            }
+            staff.setUsername(newUsername);
+        }
+        if(newPassword != null && !newPassword.isBlank())
+        {
+            staff.setPassword(newPassword);
+        }
+        return true;
     }
     
     public ArrayList<Staff> getStaffList()

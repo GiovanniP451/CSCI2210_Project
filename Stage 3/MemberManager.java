@@ -6,7 +6,7 @@
 import java.util.ArrayList;
 
 public class MemberManager {
-    private ArrayList<Member> memberList = new ArrayList<>();
+    private ArrayList<Member> memberList;
     
     public MemberManager()
     {
@@ -18,9 +18,13 @@ public class MemberManager {
         return memberList;
     }
     
-    public void addMember(Member m)
+    public boolean addMember(Member m)
     {
-        memberList.add(m);
+        if(m == null || findMemberByUsername(m.getUsername()) != null)
+        {
+            return false;
+        }
+        return memberList.add(m);
     }
     
     public Member findMember(String name)
@@ -59,33 +63,31 @@ public class MemberManager {
         return null;
     }
     
-    public void removeMember(String name)
+    public boolean removeMember(String name)
     {
         Member member = findMember(name);
-        if(member != null)
+        if(member == null)
         {
-            memberList.remove(member);
-            System.out.println("Member: '" + member.getName() + "' removed successfully");
+            return false;
         }
-        else
-        {
-            System.out.println("No Member found with that Name");
-        }
+        return memberList.remove(member);
     }
     
-    public void listMembers()
+    public boolean updateMember(String username, String newName, String newPassword)
     {
-        if(memberList.isEmpty())
+        Member member = findMemberByUsername(username);
+        if(member == null)
         {
-            System.out.println("No members found.");
-            return;
+            return false;
         }
-        else
+        if(newName != null && !newName.isBlank())
         {
-            for(Member m : memberList)
-            {
-                System.out.println("Name: " + m.getName() + " | Username: " + m.getUsername());
-            }
+            member.setName(newName);
         }
+        if(newPassword != null && !newPassword.isBlank())
+        {
+            member.setPassword(newPassword);
+        }
+        return true;
     }
 }

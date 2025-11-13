@@ -1,7 +1,8 @@
-/*
 
-@Author Isiah John
-*/
+/**
+ *
+ * @author Isiah John
+ */
 import java.util.ArrayList;
 
 public class CreditCardManager {
@@ -13,10 +14,9 @@ public class CreditCardManager {
     }
     
     //Adds and Saves Card for a Member
-    public void addCard(Member member, CreditCard card)
+    public boolean addCard(Member member, CreditCard card)
     {
-        savedCards.add(card);
-        System.out.println("Card was saved successfuly for " + member.getName());
+        return savedCards.add(card);
     }
     
     //Finds Saved Card using Member Username
@@ -32,31 +32,33 @@ public class CreditCardManager {
         return null;
     }
     
-    public void removeCard(Member member)
+    public boolean removeCard(Member member)
     {
         CreditCard card = findCard(member);
         if(card != null)
         {
             savedCards.remove(card);
-            System.out.println("Card was Removed for " + member.getName());
+            return true;
         }
-        else
-        {
-            System.out.println("No Saved Cards was Found by " + member.getName());
-        }
+        return false;
     }
     
-    public void ListAllCards()
+    public ArrayList<CreditCard> getAllCards()
     {
-        if(savedCards.isEmpty())
-        {
-            System.out.println("No Saved Cards were Found");
-        }
+        return savedCards;
+    }
+    
+    public ArrayList<CreditCard> getCardsForMember(Member member)
+    {
+        ArrayList<CreditCard> list = new ArrayList<>();
         
-        System.out.println("==== Saved Credit Cards ====");
         for(CreditCard c : savedCards)
         {
-            System.out.println(c);
+            if(c.getMemberUsername().equalsIgnoreCase(member.getUsername()))
+            {
+                list.add(c);
+            }
         }
+        return list;
     }
 }

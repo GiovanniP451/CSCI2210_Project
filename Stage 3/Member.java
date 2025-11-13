@@ -1,4 +1,4 @@
-//Author: Giovanni Pernudi
+//Author: Giovanni Pernudi & edited by Isiah John
 
 
 public class Member {
@@ -7,12 +7,14 @@ public class Member {
     private String name;
     private String username;
     private String password;
+    private Membership membership;
     
     
     public Member(String name, String username, String password) {
         this.name = name;
         this.username = username;
         this.password = password;
+        this.membership = null;
     }
     
     //explicit parameters the name and age and assigns them to the instance variables
@@ -34,7 +36,6 @@ public class Member {
         this.name = name;
     }
     
-   
     public void setUsername(String username) {
         this.username = username;
     }
@@ -43,6 +44,14 @@ public class Member {
     	this.password = password; 
     }
     
+    public Membership getMembership()
+    {
+        return membership;
+    }
     
+    public void setMembership(Membership membership)
+    {
+        this.membership = membership;
+    }
     
 }
