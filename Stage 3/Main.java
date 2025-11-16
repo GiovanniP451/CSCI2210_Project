@@ -119,7 +119,7 @@ public class Main {
         byte choice;
         do
         {
-            System.out.println("\n==== Member Menu ( " + member.getName() + ") ====");
+            System.out.println("\n==== Member Menu (" + member.getName() + ") ====");
             System.out.println("Current Area: " + currentArea.getName());
             
             if(currentArea.getName().equalsIgnoreCase("Shop"))
@@ -129,7 +129,7 @@ public class Main {
                 System.out.println("3. Change Area");
                 System.out.println("4. Logout");
             }
-            if(currentArea.getName().equalsIgnoreCase("Classes"))
+            else if(currentArea.getName().equalsIgnoreCase("Classes"))
             {
                 System.out.println("1. Enter Classes Menu");
                 System.out.println("2. View My Info");
@@ -180,7 +180,7 @@ public class Main {
                     }
                 }
             }
-            if(currentArea.getName().equalsIgnoreCase("Classes"))
+            else if(currentArea.getName().equalsIgnoreCase("Classes"))
             {
                 switch(choice)
                 {
@@ -442,7 +442,8 @@ public class Main {
                     }
                     
                     item.setQuantity(item.getQuantity() - qty);
-                    cart.addItem(item, qty);
+                    Item purchasedCopy = new Item(item.getId(), item.getName(), qty, item.getPrice());
+                    cart.addItem(purchasedCopy, qty);
                     System.out.println(qty + " " + item.getName() + "(s) added to cart.");
                     break;
                 }
@@ -651,22 +652,7 @@ public class Main {
                     }
                     else
                     {
-                        System.out.println("Select a Card to pay with: ");
-                        for(int i = 0; i < cards.size(); i++)
-                        {
-                            System.out.println((i+1) + ". " + cards.get(i));
-                        }
-                        System.out.print("Choice: ");
-                        int cardChoice = input.nextInt();
-                        input.nextLine();
-                                    
-                        if(cardChoice < 1 || cardChoice > cards.size())
-                        {
-                            System.out.println("Invalid Card Choic. Transaction Canceled");
-                            break;
-                        }
-                                    
-                        selectedCard = cards.get(cardChoice - 1);
+                        System.out.println("Card will be used for this purchased only");
                     }
                 }
                 else
@@ -676,17 +662,16 @@ public class Main {
                     {
                         System.out.println((i+1) + ". " + cards.get(i));
                     }
-                    
                     System.out.print("Choice: ");
                     int cardChoice = input.nextInt();
                     input.nextLine();
-                    
+                                    
                     if(cardChoice < 1 || cardChoice > cards.size())
                     {
-                        System.out.println("Invalid Card Choice. Transaction Canceled");
+                        System.out.println("Invalid Card Choic. Transaction Canceled");
                         break;
                     }
-                    
+                                    
                     selectedCard = cards.get(cardChoice - 1);
                 }
                 
@@ -940,14 +925,14 @@ public class Main {
                 }
             }
             
-        } while(choice != 4);
+        } while(choice != 5);
     }
     
     public static void inventoryManagementMenu(Facility facility)
     {
         Scanner input = new Scanner(System.in);
-        Inventory shopInventory = facility.getAreas().get(1).getInventory();
-        Inventory gymInventory = facility.getAreas().get(2).getInventory();
+        Inventory shopInventory = facility.findArea("Shop").getInventory();
+        Inventory gymInventory = facility.findArea("Gym Floor").getInventory();
         
         byte choice;
         do
@@ -1206,7 +1191,7 @@ public class Main {
                             found = c;
                         }
                     }
-                    if(found == null)
+                    if(found != null)
                     {
                         System.out.print("Start Time (##:##AM/PM): ");
                         String start = input.nextLine();
@@ -1214,8 +1199,12 @@ public class Main {
                         String end = input.nextLine();
                         
                         found.changeClassTime(start, end);
-                        break;
                     }
+                    else
+                    {
+                        System.out.println("Class Not Found");
+                    }
+                    break;
                 }
                 case 4:
                 {
@@ -1260,9 +1249,19 @@ public class Main {
         System.out.println("Total Staff: " + staffManager.getStaffList().size());
         System.out.println("Total Classes: " + classes.size());
         System.out.println("\nClasses with Enrollments");
+        boolean anyEnrollment = false;
         for(Class c : classes)
         {
-            System.out.println(c.getClassName() + ": " + c.getEnrolledMembers().size() + " enrolled");
+            if(!c.getEnrolledMembers().isEmpty())
+            {
+                anyEnrollment = true;
+                System.out.println(c.getClassName() + ": " + c.getEnrolledMembers().size() + " enrolled");
+                
+            }    
         }
+        if(anyEnrollment == false)
+        {
+            System.out.println("No Classes currently have enrollments");
+        }    
     }
 }

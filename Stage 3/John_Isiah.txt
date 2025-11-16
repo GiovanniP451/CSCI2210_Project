@@ -1,0 +1,17 @@
+I have done:
+- Area
+- Facility
+- Payment
+  - CashPayment
+  - CreditCardPayment
+    - CreditCardManager
+      - CreditCard
+- Login
+- MemberManager
+- MembershipManager
+  - Membership
+- Receipt
+- StaffManager
+  - Staff
+
+They were also edited by Gio 
