@@ -54,4 +54,10 @@ public class Member {
         this.membership = membership;
     }
     
+    @Override
+    public String toString()
+    {
+        return "Member Name: " + name + " | Username: " + username;
+    }
+    
 }

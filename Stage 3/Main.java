@@ -61,7 +61,7 @@ public class Main {
                     Staff staff = staffManager.findStaff(user,pass);
                     if(staff != null)
                     {
-                        staffMenu(staff, membershipManager);
+                        staffMenu(staff, staffManager, memberManager, membershipManager, facility, allClasses);
                     }
                     else
                     {
@@ -114,7 +114,7 @@ public class Main {
     public static void memberMenu(Member member, MembershipManager membershipManager, CreditCardManager creditCardManager, Facility facility)
     {
         Scanner input = new Scanner(System.in);
-        Area currentArea = facility.getAreas().get(0); //default Gym Floor
+        Area currentArea = facility.getAreas().get(0); //default Gym Entrance
         
         byte choice;
         do
@@ -709,9 +709,560 @@ public class Main {
     
     
     
-    public static void staffMenu(Staff staff, MembershipManager membershipManager)
+    public static void staffMenu(Staff staff, StaffManager staffManager,MemberManager memberManager, 
+            MembershipManager membershipManager, Facility facility, ArrayList<Class> classes)
     {
         Scanner input = new Scanner(System.in);
         
+        byte choice;
+        do
+        {
+            System.out.println("\n==== Management System ====");
+            System.out.println("1. Staff Management");
+            System.out.println("2. Member Management");
+            System.out.println("3. Inventory Management");
+            System.out.println("4. Membership Management");
+            System.out.println("5. Class Management");
+            System.out.println("6. Reports");
+            System.out.println("7. Logout"); // Back to login menu
+            System.out.print("Choice: ");
+            choice = input.nextByte();
+            input.nextLine();
+            
+            switch(choice)
+            {
+                case 1:
+                {
+                    staffManagementMenu(staffManager);
+                    break;
+                }
+                case 2:
+                {
+                    memberManagementMenu(memberManager);
+                    break;
+                }
+                case 3:
+                {
+                    inventoryManagementMenu(facility);
+                    break;
+                }
+                case 4:
+                {
+                    membershipManagementMenu(membershipManager);
+                    break;
+                }
+                case 5:
+                {
+                    classManagementMenu(classes);
+                    break;
+                }
+                case 6:
+                {
+                    reportsMenu(memberManager, staffManager, classes);
+                    break;
+                }
+                case 7:
+                {
+                    System.out.println("Returning to Login Menu");
+                    return;
+                }
+                default:
+                {
+                    System.out.println("Invalid Option. Try Again.");
+                    break;
+                }
+            }
+            
+        } while(choice != 7);
+    }
+    
+    public static void staffManagementMenu(StaffManager staffManager)
+    {
+        Scanner input = new Scanner(System.in);
+        byte choice;
+        do
+        {
+            System.out.println("\n==== Staff Management ====");
+            System.out.println("1. Add Staff");
+            System.out.println("2. Edit Staff");
+            System.out.println("3. Remove Staff");
+            System.out.println("4. List Staff");
+            System.out.println("5. Back to Management Menu");
+            System.out.print("Choice: ");
+            choice = input.nextByte();
+            input.nextLine();
+            
+            switch(choice)
+            {
+                case 1:
+                {
+                    System.out.println("Please Enter Info");
+                    System.out.print("Name: ");
+                    String name = input.nextLine();
+                    
+                    System.out.print("Username: ");
+                    String user = input.nextLine();
+                    
+                    System.out.print("Password: ");
+                    String pass = input.nextLine();
+                    
+                    staffManager.addStaff(new Staff(name, user, pass));
+                    System.out.println("New Staff Successfully Added to System");
+                    break;
+                }
+                case 2:
+                {
+                    staffManager.listStaff();
+                    System.out.println("Pleae Enter username of Staff to Edit");
+                    System.out.print("Username: ");
+                    String user = input.nextLine();
+                    System.out.print("Enter New Name: ");
+                    String newName = input.nextLine();
+                    System.out.print("Enter New Username: ");
+                    String newUser = input.nextLine();
+                    System.out.print("Enter New Password: ");
+                    String newPass = input.nextLine();
+                    staffManager.updateStaff(user, newName, newUser, newPass);
+                    break;
+                }
+                case 3:
+                {
+                    System.out.print("Name to Remove: ");
+                    String name = input.nextLine();
+                    boolean temp = staffManager.removeStaff(name);
+                    if(temp == true)
+                    {
+                        System.out.println("Staff removed");
+                    }
+                    else
+                    {
+                        System.out.println("Failed to Remove Staff");
+                    }
+                    break;
+                }
+                case 4:
+                {
+                    staffManager.listStaff();
+                    break;
+                }
+                case 5:
+                {
+                    System.out.println("Returning back to Management Menu");
+                    return;
+                }
+                default:
+                {
+                    System.out.println("Invalid Choice. Try Again");
+                    break;
+                }
+            }
+        } while(choice != 5);
+        
+        
+    }
+    
+    public static void memberManagementMenu(MemberManager memberManager)
+    {
+        Scanner input = new Scanner(System.in);
+        byte choice;
+        do
+        {
+            System.out.println("\n==== Member Management ====");
+            System.out.println("1. Add Member");
+            System.out.println("2. Edit Member");
+            System.out.println("3. Remove Member");
+            System.out.println("4. List Members");
+            System.out.println("5. Back To Management Menu");
+            System.out.print("Choice: ");
+            choice = input.nextByte();
+            input.nextLine();
+            
+            switch(choice)
+            {
+                case 1:
+                {
+                    System.out.println("Please Enter Info");
+                    System.out.print("Name: ");
+                    String name = input.nextLine();
+                    
+                    System.out.print("Username: ");
+                    String user = input.nextLine();
+                    
+                    System.out.print("Password: ");
+                    String pass = input.nextLine();
+                    
+                    memberManager.addMember(new Member(name, user, pass));
+                    System.out.println("New Member Successfully Added to System");
+                    break;
+                }
+                case 2:
+                {
+                    memberManager.listMembers();
+                    System.out.println("Pleae Enter username of Member to Edit");
+                    System.out.print("Username: ");
+                    String user = input.nextLine();
+                    System.out.print("Enter New Name: ");
+                    String newName = input.nextLine();
+                    System.out.print("Enter New Password: ");
+                    String newPass = input.nextLine();
+                    memberManager.updateMember(user, newName, newPass);
+                    break;
+                }
+                case 3:
+                {
+                    System.out.print("Name to Remove: ");
+                    String name = input.nextLine();
+                    boolean temp = memberManager.removeMember(name);
+                    if(temp == true)
+                    {
+                        System.out.println("Staff removed");
+                    }
+                    else
+                    {
+                        System.out.println("Failed to Remove Staff");
+                    }
+                    break;
+                }
+                case 4:
+                {
+                    memberManager.listMembers();
+                    break;
+                }
+                case 5:
+                {
+                    System.out.println("Returning back to Management Menu");
+                    return;
+                }
+                default:
+                {
+                    System.out.println("Invalid Choice. Try Again");
+                    break;
+                }
+            }
+            
+        } while(choice != 4);
+    }
+    
+    public static void inventoryManagementMenu(Facility facility)
+    {
+        Scanner input = new Scanner(System.in);
+        Inventory shopInventory = facility.getAreas().get(1).getInventory();
+        Inventory gymInventory = facility.getAreas().get(2).getInventory();
+        
+        byte choice;
+        do
+        {
+            System.out.println("\n==== Inventory Management ====");
+            System.out.println("1. Manage Shop Inventory");
+            System.out.println("2. Manage Gym Floor Inventory");
+            System.out.println("3. Back to Management Menu");
+            System.out.print("Choice: ");
+            choice = input.nextByte();
+            
+            switch(choice)
+            {
+                case 1:
+                {
+                    manageInventory(shopInventory, "Shop Inventory");
+                    break;
+                }
+                case 2:
+                {
+                    manageInventory(gymInventory, "Gym Floor Inventory");
+                    break;
+                }
+                case 3:
+                {
+                    System.out.println("Returning back to Management Menu");
+                    return;
+                }
+                default:
+                {
+                    System.out.println("Invalid Choice. Try Again");
+                    break;
+                }
+            }
+        } while(choice != 3);
+    }
+    
+    public static void manageInventory(Inventory inventory, String title)
+    {
+        Scanner input = new Scanner(System.in);
+        byte choice;
+        do
+        {
+            System.out.println("\n==== " + title + " ====");
+            System.out.println("1. View Items");
+            System.out.println("2. Add Item");
+            System.out.println("3. Update Item Quantity");
+            System.out.println("4. Remove Item");
+            System.out.println("5. Back to Management Menu");
+            System.out.print("Choice: ");
+            choice = input.nextByte();
+            input.nextLine();
+            
+            switch(choice)
+            {
+                case 1:
+                {
+                    inventory.showAllItems();
+                    break;
+                }
+                case 2:
+                {
+                    System.out.print("Item ID: ");
+                    int id = input.nextInt();
+                    input.nextLine();
+                    
+                    System.out.print("Item Name: ");
+                    String name = input.nextLine();
+                    
+                    System.out.print("Item Quantity: ");
+                    int qty = input.nextInt();
+                    
+                    System.out.print("Item Price: ");
+                    double price = input.nextDouble();
+                    
+                    inventory.addItem(new Item(id, name, qty, price));
+                    System.out.println("Item Added");
+                    break;
+                }
+                case 3:
+                {
+                    System.out.print("Item ID: ");
+                    int id = input.nextInt();
+                    Item item = inventory.findItemByID(id);
+                    
+                    if(item == null)
+                    {
+                        System.out.println("Item not found");
+                        break;
+                    }
+                    System.out.print("New Item Quantity: ");
+                    int qty = input.nextInt();
+                    item.setQuantity(qty);
+                    
+                    System.out.println("Quantity Updated");
+                    break;
+                }
+                case 4:
+                {
+                    System.out.print("Item ID: ");
+                    int id = input.nextInt();
+                    Item item = inventory.findItemByID(id);
+                    
+                    if(item != null)
+                    {
+                        inventory.removeItem(item);
+                        System.out.println("Item Removed");
+                    }
+                    else
+                    {
+                        System.out.println("Item Not Found");
+                    }
+                    break;
+                }
+                case 5:
+                {
+                    System.out.println("Returning back to Management Menu");
+                    return;
+                }
+                default:
+                {
+                    System.out.println("Invalid Choice. Try Again");
+                    break;
+                }
+            }
+        } while(choice != 5);
+    }
+    
+    public static void membershipManagementMenu(MembershipManager membershipManager)
+    {
+        Scanner input = new Scanner(System.in);
+        byte choice;
+        do
+        {
+            System.out.println("\n==== Membership Management");
+            System.out.println("1. List Membership");
+            System.out.println("2. Add Membership");
+            System.out.println("3. Edit Membership");
+            System.out.println("4. Remove Membership");
+            System.out.println("5. Back to Management Menu");
+            System.out.print("Choice: ");
+            choice = input.nextByte();
+            input.nextLine();
+            
+            switch(choice)
+            {
+                case 1:
+                {
+                    membershipManager.listMembership();
+                    break;
+                }
+                case 2:
+                {
+                    System.out.print("Type: ");
+                    String type = input.nextLine();
+                    System.out.println("Cost: ");
+                    double cost = input.nextDouble();
+                    boolean status = membershipManager.createMembership(new Membership(type, cost));
+                    if(status == true)
+                    {
+                        System.out.println("Membership Created");
+                    }
+                    else
+                    {
+                        System.out.println("Failed to Create Membership");
+                    }
+                    break;
+                }
+                case 3:
+                {
+                    System.out.print("Type to Edit: ");
+                    String type = input.nextLine();
+                    System.out.print("New Type Name: ");
+                    String newType = input.nextLine();
+                    System.out.print("New Price: ");
+                    double newCost = input.nextDouble();
+                    membershipManager.updateMembership(type, newType, newCost);
+                    break;
+                }
+                case 4:
+                {
+                    System.out.print("Type to Remove: ");
+                    String remove = input.nextLine();
+                    boolean status = membershipManager.removeMembership(remove);
+                    if(status == true)
+                    {
+                        System.out.println("Membership Removed");
+                    }
+                    else
+                    {
+                        System.out.println("Failed to remove Membership");
+                    }
+                    break;
+                }
+                case 5:
+                {
+                    System.out.println("Returning back to Management Menu");
+                    return;
+                }
+                default:
+                {
+                    System.out.println("Invalid Choice. Try Again");
+                    break;
+                }
+            }
+        } while(choice != 5);
+    }
+    
+    public static void classManagementMenu(ArrayList<Class> classes)
+    {
+        Scanner input = new Scanner(System.in);
+        
+        byte choice;
+        do
+        {
+            System.out.println("\n==== Class Management ====");
+            System.out.println("1. List Classes");
+            System.out.println("2. Add Class");
+            System.out.println("3. Scehdule Class");
+            System.out.println("4. View Roster");
+            System.out.println("5. Back to Management Menu");
+            System.out.print("Choice: ");
+            choice = input.nextByte();
+            input.nextLine();
+            
+            switch(choice)
+            {
+                case 1:
+                {
+                    for(Class c : classes)
+                    {
+                        System.out.println("- " + c.getClassName());
+                    }
+                    break;
+                }
+                case 2:
+                {
+                    System.out.print("Class Name: ");
+                    String name = input.nextLine();
+                    
+                    System.out.print("Max Capacity: ");
+                    int cap = input.nextInt();
+                    input.nextLine();
+                    classes.add(new Class(name, cap));
+                    break;
+                }
+                case 3:
+                {
+                    System.out.print("Class Name: ");
+                    String name = input.nextLine();
+                    Class found = null;
+                    for(Class c : classes)
+                    {
+                        if(c.getClassName().equalsIgnoreCase(name))
+                        {
+                            found = c;
+                        }
+                    }
+                    if(found == null)
+                    {
+                        System.out.print("Start Time (##:##AM/PM): ");
+                        String start = input.nextLine();
+                        System.out.print("End Time (##:##AM/PM): ");
+                        String end = input.nextLine();
+                        
+                        found.changeClassTime(start, end);
+                        break;
+                    }
+                }
+                case 4:
+                {
+                    System.out.print("Class Name: ");
+                    String name = input.nextLine();
+                    Class found = null;
+                    for(Class c : classes)
+                    {
+                        if(c.getClassName().equalsIgnoreCase(name))
+                        {
+                            found = c;
+                        }
+                    }
+                    if(found != null)
+                    {
+                        found.getRoster();
+                    }
+                    else
+                    {
+                        System.out.println("Class Was Not Found");
+                    }
+                    break;
+                }
+                case 5:
+                {
+                    System.out.println("Returning back to Management Menu");
+                    return;
+                }
+                default:
+                {
+                    System.out.println("Invalid Choice. Try Again");
+                    break;
+                }
+            }
+        }while(choice != 5);
+    }
+    
+    public static void reportsMenu(MemberManager memberManager, StaffManager staffManager, ArrayList<Class> classes)
+    {
+        System.out.println("\n==== Report ====");
+        System.out.println("Total Members: " + memberManager.getMembers().size());
+        System.out.println("Total Staff: " + staffManager.getStaffList().size());
+        System.out.println("Total Classes: " + classes.size());
+        System.out.println("\nClasses with Enrollments");
+        for(Class c : classes)
+        {
+            System.out.println(c.getClassName() + ": " + c.getEnrolledMembers().size() + " enrolled");
+        }
     }
 }

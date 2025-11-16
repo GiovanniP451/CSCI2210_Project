@@ -47,7 +47,7 @@ public class Inventory {
         }
     }
     
-     /*
+    /*
      * Method to be able to complete the transaction for purchasing an item. 
      * and getting it from inventory. 
      */

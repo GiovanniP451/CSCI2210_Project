@@ -92,6 +92,14 @@ public class StaffManager {
         return true;
     }
     
+    public void listStaff()
+    {
+        for(Staff s : staffList)
+        {
+            System.out.println(s);
+        }
+    }
+    
     public ArrayList<Staff> getStaffList()
     {
         return staffList;

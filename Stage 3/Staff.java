@@ -30,11 +30,17 @@ public class Staff {
         this.name = name;
     }
    
-    public String setUsername(String username) {
-        return this.username = username;
+    public void setUsername(String username) {
+        this.username = username;
     }
     
-    public String setPassword(String password) {
-    	return this.password = password; 
+    public void setPassword(String password) {
+    	this.password = password; 
+    }
+    
+    @Override
+    public String toString()
+    {
+        return "Staff Name: " + name + " | Username: " + username;
     }
 }

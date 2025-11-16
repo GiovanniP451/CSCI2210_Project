@@ -90,4 +90,12 @@ public class MemberManager {
         }
         return true;
     }
+    
+    public void listMembers()
+    {
+        for(Member m : memberList)
+        {
+            System.out.println(m);
+        }
+    }
 }

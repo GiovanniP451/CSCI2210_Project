@@ -1,7 +1,7 @@
 /*
-
-@Author Isiah John
+* Author: Isiah John
 */
+
 public class Receipt {
     private Payment payment;
     
@@ -33,7 +33,7 @@ public class Receipt {
         if(!payment.getPurchasedItems().isEmpty())
         {
             receipt += "Items Purchased:\n";
-            for(Item i : payment.getPurchasedItems())
+            for(Item i : payment.getPurchasedItems().keySet())
             {
                 receipt += " - " + i.getName() + " ...... $" + String.format("%.2f",i.getPrice()) + "\n";
             }

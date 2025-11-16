@@ -13,7 +13,6 @@ public abstract class Payment {
     private static int nextPaymentID = 1;
     private final double taxRate = 0.08;
     
-    
     public Payment()
     {
         this.amount = 0.0;
@@ -73,7 +72,6 @@ public abstract class Payment {
         purchasedMembership.add(membership);
     }
 
-    
     public double calculateSubtotal()
     {
         double subTotal = 0.0;

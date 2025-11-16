@@ -46,4 +46,25 @@ public class Item {
     {
         return String.format("ID: %d | %s (x%d) - $%.2f each", id, name, quantity, price);
     }
+    
+    @Override
+    public boolean equals(Object o)
+    {
+        if(this == o)
+        {
+            return true;
+        }
+        if(!(o instanceof Item))
+        {
+            return false;
+        }
+        Item other = (Item) o;
+        return this.id == other.id;
+    }
+    
+    @Override
+    public int hashCode()
+    {
+        return Integer.hashCode(id);
+    }
 }
