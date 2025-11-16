@@ -1,21 +1,14 @@
-/*
 
-@Author Isiah John
-*/
-
-/*
- * This class will process payment with the use of a credit card.
+/**
+ *
+ * @author Isiah John
  */
-
-//Typical information found on credit card for instance variables.
-
 public class CreditCard {
     private String cardNumber;
     private String cardHolderName;
     private String expiryDate;
     private String memberUsername; 
     
-//object to contain the information of the card.
     public CreditCard(String cardNumber, String cardHolderName, String expiryDate, String memberUsername)
     {
         this.cardNumber = cardNumber;
@@ -24,7 +17,7 @@ public class CreditCard {
         this.memberUsername = memberUsername;
     }
 
-//getters to be able to get the credit card number.
+    //getters to be able to get the credit card number.
     public String getCardNumber() {
         return cardNumber;
     }
@@ -41,7 +34,7 @@ public class CreditCard {
         return memberUsername;
     }
     
-//masked card method to hide the information of the credit card //typically during transactions.
+    //masked card method to hide the information of the credit card //typically during transactions.
     public String getMaskedCard()
     {
         if(cardNumber.length() >= 4)

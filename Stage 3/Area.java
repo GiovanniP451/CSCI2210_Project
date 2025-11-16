@@ -22,12 +22,12 @@ public class Area {
     {
         return inventory;
     }
-    
+    /*
     public void showAreaDetails()
     {
         System.out.println("==== Area: " + name + " ====");
         inventory.showAllItems();
-    }
+    }*/
     @Override
     public String toString()
     {

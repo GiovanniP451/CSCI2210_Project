@@ -1,36 +1,24 @@
 /*
-
-@Author Isiah John
+* Author: Isiah John
 */
-
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public abstract class Payment {
-    private ArrayList<Item> purchasedItems;
+    private HashMap<Item, Integer> purchasedItems;
     private ArrayList<Membership> purchasedMembership;
-    private ArrayList<Payment> payments;
     private int paymentID;
     private double amount;
     private String method;
     private static int nextPaymentID = 1;
-    private double taxRate = 0.08;
+    private final double taxRate = 0.08;
     
     
     public Payment()
     {
         this.amount = 0.0;
-        this.payments = new ArrayList<>();
         this.paymentID = nextPaymentID++;
-        this.purchasedItems = new ArrayList<>();
-        this.purchasedMembership = new ArrayList<>();
-    }
-    
-    public Payment(double amount)
-    {
-        this.paymentID = nextPaymentID++;
-        this.payments = new ArrayList<>();
-        this.amount = amount;
-        this.purchasedItems = new ArrayList<>();
+        this.purchasedItems = new HashMap<>();
         this.purchasedMembership = new ArrayList<>();
     }
 
@@ -57,14 +45,22 @@ public abstract class Payment {
         this.method = method;
     }
     
-    public ArrayList<Item> getPurchasedItems()
+    public HashMap<Item, Integer> getPurchasedItems()
     {
         return purchasedItems;
     }
     
-    public void addItemP(Item item)
+    public void addItem(Item item, int quantity)
     {
-        purchasedItems.add(item);
+        if(purchasedItems.containsKey(item))
+        {
+            int oldQty = purchasedItems.get(item); //saves the old quantity of item first
+            purchasedItems.put(item, oldQty + quantity);
+        }
+        else
+        {
+            purchasedItems.put(item, quantity);
+        }
     }
     
     public ArrayList<Membership> getPurchasedMembership()
@@ -76,23 +72,15 @@ public abstract class Payment {
     {
         purchasedMembership.add(membership);
     }
-    
-    public void addPayment(Payment payment)
-    {
-        payments.add(payment);
-    }
-    
-    public ArrayList<Payment> getAllPayments()
-    {
-        return payments;
-    }
+
     
     public double calculateSubtotal()
     {
         double subTotal = 0.0;
-        for(Item i : purchasedItems)
+        for(Item i : purchasedItems.keySet())
         {
-            subTotal += i.getPrice(); //When Item class has been created
+            int qty = purchasedItems.get(i);
+            subTotal += i.getPrice() * qty; //When Item class has been created
         }
         for(Membership m : purchasedMembership)
         {
@@ -112,8 +100,5 @@ public abstract class Payment {
         return amount;
     }
     
-    public String getPaymentDetails()
-    {
-        return "";
-    }
+    public abstract String getPaymentDetails();
 }

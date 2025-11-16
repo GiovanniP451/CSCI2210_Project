@@ -76,6 +76,22 @@ public class MembershipManager {
         return memberships.remove(m);
     }
     
+    public boolean listMembership()
+    {
+        if(memberships.isEmpty())
+        {
+            return false;
+        }
+        else
+        {
+            for(Membership m : memberships)
+            {
+                System.out.println(m);
+            }
+        }
+        return true;
+    }
+    
     public ArrayList<Membership> getMemberships()
     {
         return memberships;
