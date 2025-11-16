@@ -5,6 +5,14 @@
  */
 import java.util.ArrayList;
 
+/*
+ * This class will contain a list of stored credit cards within the program.
+ */
+
+/*
+ * Create an arraylist of the stored credit cards. 
+ */
+
 public class CreditCardManager {
     private ArrayList<CreditCard> savedCards;
     
@@ -32,6 +40,7 @@ public class CreditCardManager {
         return null;
     }
     
+	//method to remove a saved credit card.
     public boolean removeCard(Member member)
     {
         CreditCard card = findCard(member);
@@ -43,18 +52,21 @@ public class CreditCardManager {
         return false;
     }
     
+    //Be able to retreive all the credit cards stored.
     public ArrayList<CreditCard> getAllCards()
     {
         return savedCards;
     }
     
+    //return a list of saved credit card and information for //the user.
     public ArrayList<CreditCard> getCardsForMember(Member member)
     {
         ArrayList<CreditCard> list = new ArrayList<>();
         
         for(CreditCard c : savedCards)
         {
-            if(c.getMemberUsername().equalsIgnoreCase(member.getUsername()))
+            
+if(c.getMemberUsername().equalsIgnoreCase(member.getUsername()))
             {
                 list.add(c);
             }
