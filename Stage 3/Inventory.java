@@ -18,6 +18,7 @@ public class Inventory {
         Items.remove(item);
     }
     
+    //Get the list of items from the arraylist.
     public ArrayList<Item> getItems()
     {
         return Items;
@@ -46,6 +47,10 @@ public class Inventory {
         }
     }
     
+     /*
+     * Method to be able to complete the transaction for purchasing an item. 
+     * and getting it from inventory. 
+     */
     public Item purchaseItem(int id, int quantityReq)
     {
         Item items = findItemByID(id);
