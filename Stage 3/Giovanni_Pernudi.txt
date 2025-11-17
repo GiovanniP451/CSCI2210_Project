@@ -1,0 +1,20 @@
+I have worked on:
+Created 
+-Inventory
+-Member
+-Class
+-Item
+-Schedule 
+
+Removed
+-packages to not ruin program 
+
+Edited/Corrections 
+- CashPayment
+- Credit Cards
+- Added comments to classes
+
+Uploaded
+readmetxt file
+userguide
+screenshot of files in folder. 
