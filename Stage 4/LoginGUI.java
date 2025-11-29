@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 
 /**
  *
@@ -23,20 +19,15 @@ public class LoginGUI extends javax.swing.JFrame {
     public LoginGUI()
     {
         initComponents();
-    }
-    public LoginGUI(MemberManager mm, StaffManager sm, MembershipManager ms,
-            CreditCardManager cc, Facility facility) {
-        this();
-        this.memberManager = mm;
-        this.staffManager = sm;
-        this.membershipManager= ms;
-        this.cardManager = cc;
-        this.facility = facility;
-        /* Temp
-        memberManager.addMember(new Member("Bob", "bob1", "pass1234"));
-        staffManager.addStaff(new Staff("Isiah", "zaya", "pass1234"));
-        */
+        memberManager = new MemberManager();
+        staffManager = new StaffManager();
+        membershipManager = new MembershipManager();
+        cardManager = new CreditCardManager();
+        facility = new Facility();
         login = new Login(memberManager, staffManager);
+        
+        memberManager.loadMembersFromFile("members.txt");
+        staffManager.loadStaffFromFile("staff.txt");
     }
 
     /**
@@ -56,6 +47,11 @@ public class LoginGUI extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Login");
         setPreferredSize(new java.awt.Dimension(300, 270));
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
+            }
+        });
 
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -104,17 +100,22 @@ public class LoginGUI extends javax.swing.JFrame {
     private void btnMemberLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMemberLoginActionPerformed
 
         new MemberLoginGUI(login, memberManager, membershipManager, cardManager, facility).setVisible(true);
-        this.setVisible(false);
+        this.dispose();
     }//GEN-LAST:event_btnMemberLoginActionPerformed
 
     private void btnStaffLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStaffLoginActionPerformed
-        new StaffLoginGUI(login, staffManager, memberManager, membershipManager, facility).setVisible(true);
-        this.setVisible(false);
+        new StaffLoginGUI(login, staffManager, memberManager, membershipManager, cardManager, facility).setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_btnStaffLoginActionPerformed
 
     private void btnQuitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnQuitActionPerformed
         System.exit(0);
     }//GEN-LAST:event_btnQuitActionPerformed
+
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+
+        
+    }//GEN-LAST:event_formWindowOpened
 
     /**
      * @param args the command line arguments
@@ -136,14 +137,9 @@ public class LoginGUI extends javax.swing.JFrame {
             logger.log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-
-        MemberManager mm = new MemberManager();
-        StaffManager sm = new StaffManager();
-        MembershipManager ms = new MembershipManager();
-        CreditCardManager cc = new CreditCardManager();
-        Facility facility = new Facility();
+        
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new LoginGUI(mm, sm, ms, cc, facility).setVisible(true));
+        java.awt.EventQueue.invokeLater(() -> new LoginGUI().setVisible(true));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

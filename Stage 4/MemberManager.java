@@ -3,6 +3,11 @@
  *
  * @author Isiah John
  */
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class MemberManager {
@@ -12,6 +17,56 @@ public class MemberManager {
     {
         this.memberList = new ArrayList<>();
     }
+    
+    public boolean loadMembersFromFile(String MemberFile)
+    {
+        memberList.clear();
+        try(BufferedReader br = new BufferedReader(new FileReader(MemberFile)))
+        {
+            String row;
+            while((row = br.readLine()) != null)
+            {
+                row = row.trim();
+                if(row.isEmpty()) 
+                {
+                    continue;
+                }
+                
+                String[] data = row.split(",");
+                
+                if(data.length != 3)
+                {
+                    continue;
+                }
+                String name = data[0].trim();
+                String username = data[1].trim();
+                String password = data[2].trim();
+                addMember(new Member(name, username, password));
+            }
+            return true;
+        }
+        catch(IOException e)
+        {
+            return false;
+        }
+    }
+    
+    public boolean saveMemberFile(String MemberFile, ArrayList<String> data)
+    {
+        try(BufferedWriter bw = new BufferedWriter(new FileWriter(MemberFile)))
+        {
+            for(String row : data)
+            {
+                bw.write(row);
+                bw.newLine();
+            }
+            return true;
+        }
+        catch(IOException e)
+        {
+            return false;
+        }
+    }    
     
     public ArrayList<Member> getMembers()
     {

@@ -3,6 +3,11 @@
  *
  * @author Isiah John
  */
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class StaffManager {
@@ -11,6 +16,55 @@ public class StaffManager {
     public StaffManager()
     {
         this.staffList = new ArrayList<>();
+    }
+    
+    public boolean loadStaffFromFile(String StaffFile)
+    {
+        staffList.clear();
+        try(BufferedReader br = new BufferedReader(new FileReader(StaffFile)))
+        {
+            String row;
+            while((row = br.readLine()) != null)
+            {
+                row = row.trim();
+                if(row.isEmpty()) 
+                {
+                    continue;
+                }
+                
+                String[] data = row.split(",");
+                if(data.length != 3)
+                {
+                    continue;
+                }
+                String name = data[0].trim();
+                String username = data[1].trim();
+                String password = data[2].trim();
+                addStaff(new Staff(name, username, password));
+            }
+            return true;
+        }
+        catch(IOException e)
+        {
+            return false;
+        }
+    }
+    
+    public boolean saveStaffFile(String StaffFile, ArrayList<String> data)
+    {
+        try(BufferedWriter bw = new BufferedWriter(new FileWriter(StaffFile)))
+        {
+            for(String row : data)
+            {
+                bw.write(row);
+                bw.newLine();
+            }
+            return true;
+        }
+        catch(IOException e)
+        {
+            return false;   
+        }
     }
     
     public boolean addStaff(Staff staff)
@@ -48,8 +102,10 @@ public class StaffManager {
     {
         for(Staff s : staffList)
         {
-            if(s.getUsername().equalsIgnoreCase(username) && s.getPassword().equals(password));
-            return s;
+            if(s.getUsername().equalsIgnoreCase(username) && s.getPassword().equals(password))
+            {
+                return s;
+            }
         }
         return null;
     }

@@ -1,7 +1,12 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
+
+import java.io.BufferedWriter;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.ObjectOutputStream;
+import java.util.ArrayList;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
 
 /**
  *
@@ -10,10 +15,12 @@
 public class StaffMenuGUI extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(StaffMenuGUI.class.getName());
+    //private Login loginObject;
     private Staff staff;
     private StaffManager staffManager;
     private MemberManager memberManager;
     private MembershipManager membershipManager;
+    private CreditCardManager cardManager;
     private Facility facility;
 
     /**
@@ -21,17 +28,26 @@ public class StaffMenuGUI extends javax.swing.JFrame {
      */
     public StaffMenuGUI() {
         initComponents();
+        initComboBox();
     }
     
-    public StaffMenuGUI(Staff s, MemberManager mm, MembershipManager ms, StaffManager sm, Facility facility)
+    public StaffMenuGUI(Staff st, MemberManager mm, MembershipManager ms, StaffManager sm, CreditCardManager ccManager, Facility facility)
     {
         this();
-        this.staff = s;
+        //this.loginObject = login;
+        this.staff = st;
         this.staffManager = sm;
         this.memberManager = mm;
         this.membershipManager = ms;
+        this.cardManager = ccManager;
         this.facility = facility;
-        System.out.println("Welcome" + staff.getName());
+        
+        lblWelcome.setText("Welcome " + staff.getName() + " to the Management System");
+    }
+    
+    public void initComboBox()
+    {
+        //Come back Later
     }
 
     /**
@@ -43,22 +59,319 @@ public class StaffMenuGUI extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        jTabbedPane1 = new javax.swing.JTabbedPane();
+        pDashboard = new javax.swing.JPanel();
+        lblWelcome = new javax.swing.JLabel();
+        btnLogout = new javax.swing.JButton();
+        pManageMembers = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tblMembers = new javax.swing.JTable();
+        jPanel1 = new javax.swing.JPanel();
+        lblMName = new javax.swing.JLabel();
+        txtMName = new javax.swing.JTextField();
+        lblMUsername = new javax.swing.JLabel();
+        txtMUsername = new javax.swing.JTextField();
+        lblMPassword = new javax.swing.JLabel();
+        txtMPassword = new javax.swing.JTextField();
+        lblMMembership = new javax.swing.JLabel();
+        cbMembership = new javax.swing.JComboBox<>();
+        btnMAdd = new javax.swing.JButton();
+        btnMEdit = new javax.swing.JButton();
+        btnMRemove = new javax.swing.JButton();
+        pManageStaff = new javax.swing.JPanel();
+        pManageInventory = new javax.swing.JPanel();
+        pManageMembership = new javax.swing.JPanel();
+        pManageClasses = new javax.swing.JPanel();
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Staff Management Menu");
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
+            }
+        });
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        lblWelcome.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+
+        btnLogout.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        btnLogout.setText("Logout");
+        btnLogout.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLogoutActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout pDashboardLayout = new javax.swing.GroupLayout(pDashboard);
+        pDashboard.setLayout(pDashboardLayout);
+        pDashboardLayout.setHorizontalGroup(
+            pDashboardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pDashboardLayout.createSequentialGroup()
+                .addGap(26, 26, 26)
+                .addGroup(pDashboardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblWelcome, javax.swing.GroupLayout.PREFERRED_SIZE, 544, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnLogout, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(60, Short.MAX_VALUE))
         );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+        pDashboardLayout.setVerticalGroup(
+            pDashboardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pDashboardLayout.createSequentialGroup()
+                .addGap(26, 26, 26)
+                .addComponent(lblWelcome, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(106, 106, 106)
+                .addComponent(btnLogout)
+                .addContainerGap(136, Short.MAX_VALUE))
         );
 
-        pack();
+        jTabbedPane1.addTab("Dashboard", pDashboard);
+
+        tblMembers.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Name", "Username", "Password", "Membership"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane1.setViewportView(tblMembers);
+
+        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "New Member"));
+
+        lblMName.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lblMName.setText("Name");
+
+        txtMName.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+
+        lblMUsername.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lblMUsername.setText("Username");
+
+        txtMUsername.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+
+        lblMPassword.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lblMPassword.setText("Password");
+
+        txtMPassword.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+
+        lblMMembership.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lblMMembership.setText("Membership");
+
+        btnMAdd.setText("Add Member");
+        btnMAdd.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnMAddActionPerformed(evt);
+            }
+        });
+
+        btnMEdit.setText("Update");
+
+        btnMRemove.setText("Remove");
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txtMPassword)
+                    .addComponent(txtMUsername)
+                    .addComponent(txtMName)
+                    .addComponent(cbMembership, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblMName)
+                            .addComponent(lblMUsername)
+                            .addComponent(lblMPassword)
+                            .addComponent(lblMMembership))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(btnMEdit, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnMRemove, javax.swing.GroupLayout.DEFAULT_SIZE, 86, Short.MAX_VALUE))
+                    .addComponent(btnMAdd, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addComponent(lblMName)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtMName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lblMUsername)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtMUsername, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lblMPassword)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtMPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lblMMembership)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(cbMembership, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnMEdit)
+                    .addComponent(btnMRemove))
+                .addGap(28, 28, 28)
+                .addComponent(btnMAdd)
+                .addContainerGap(51, Short.MAX_VALUE))
+        );
+
+        javax.swing.GroupLayout pManageMembersLayout = new javax.swing.GroupLayout(pManageMembers);
+        pManageMembers.setLayout(pManageMembersLayout);
+        pManageMembersLayout.setHorizontalGroup(
+            pManageMembersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pManageMembersLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 384, Short.MAX_VALUE)
+                .addGap(18, 18, 18))
+        );
+        pManageMembersLayout.setVerticalGroup(
+            pManageMembersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pManageMembersLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(pManageMembersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+
+        jTabbedPane1.addTab("Members", pManageMembers);
+
+        javax.swing.GroupLayout pManageStaffLayout = new javax.swing.GroupLayout(pManageStaff);
+        pManageStaff.setLayout(pManageStaffLayout);
+        pManageStaffLayout.setHorizontalGroup(
+            pManageStaffLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 630, Short.MAX_VALUE)
+        );
+        pManageStaffLayout.setVerticalGroup(
+            pManageStaffLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 395, Short.MAX_VALUE)
+        );
+
+        jTabbedPane1.addTab("Staff", pManageStaff);
+
+        javax.swing.GroupLayout pManageInventoryLayout = new javax.swing.GroupLayout(pManageInventory);
+        pManageInventory.setLayout(pManageInventoryLayout);
+        pManageInventoryLayout.setHorizontalGroup(
+            pManageInventoryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 630, Short.MAX_VALUE)
+        );
+        pManageInventoryLayout.setVerticalGroup(
+            pManageInventoryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 395, Short.MAX_VALUE)
+        );
+
+        jTabbedPane1.addTab("Inventory", pManageInventory);
+
+        javax.swing.GroupLayout pManageMembershipLayout = new javax.swing.GroupLayout(pManageMembership);
+        pManageMembership.setLayout(pManageMembershipLayout);
+        pManageMembershipLayout.setHorizontalGroup(
+            pManageMembershipLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 630, Short.MAX_VALUE)
+        );
+        pManageMembershipLayout.setVerticalGroup(
+            pManageMembershipLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 395, Short.MAX_VALUE)
+        );
+
+        jTabbedPane1.addTab("Membership", pManageMembership);
+
+        javax.swing.GroupLayout pManageClassesLayout = new javax.swing.GroupLayout(pManageClasses);
+        pManageClasses.setLayout(pManageClassesLayout);
+        pManageClassesLayout.setHorizontalGroup(
+            pManageClassesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 630, Short.MAX_VALUE)
+        );
+        pManageClassesLayout.setVerticalGroup(
+            pManageClassesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 395, Short.MAX_VALUE)
+        );
+
+        jTabbedPane1.addTab("Classes", pManageClasses);
+
+        getContentPane().add(jTabbedPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 630, 430));
+
+        setSize(new java.awt.Dimension(654, 448));
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogoutActionPerformed
+        this.dispose();
+        new LoginGUI().setVisible(true);
+        
+    }//GEN-LAST:event_btnLogoutActionPerformed
+
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        // TODO add your handling code here:
+        loadMemberTable();
+    }//GEN-LAST:event_formWindowOpened
+
+    private void btnMAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMAddActionPerformed
+        try
+        {
+            //Code membership combo box later
+            
+            String[] tableRow = {txtMName.getText(),txtMUsername.getText(),txtMPassword.getText()};
+            DefaultTableModel model = (DefaultTableModel) tblMembers.getModel();
+            model.addRow(tableRow);
+            clearFields();
+            ArrayList<String> tableData = new ArrayList<>();
+            
+            for(int i = 0; i< model.getRowCount(); i++)
+            {
+                String name = model.getValueAt(i,0).toString();
+                String username = model.getValueAt(i,1).toString();
+                String password = model.getValueAt(i,2).toString();
+                
+                String row = (name + "," + username + "," + password);
+                tableData.add(row);
+            }
+            if(memberManager.saveMemberFile("members.txt", tableData))
+            {
+                JOptionPane.showMessageDialog(this,"Saved to Member File");
+            }
+        }
+        catch (Exception e)
+        {
+            JOptionPane.showMessageDialog(this, "Failed to Add Member");
+        }
+    }//GEN-LAST:event_btnMAddActionPerformed
+
+    
+    private void clearFields()
+    {
+        txtMName.setText("");
+        txtMUsername.setText("");
+        txtMPassword.setText("");
+    }
+    
+    private void loadMemberTable()
+    {
+        DefaultTableModel model = (DefaultTableModel) tblMembers.getModel();
+        for(Member m : memberManager.getMembers())
+        {
+            String membershipTxt = "None";
+            if(m.getMembership() != null)
+            {
+                membershipTxt = m.getMembership().getType();
+            }
+            
+            model.addRow(new Object[]{m.getName(),m.getUsername(), m.getPassword(),
+                membershipTxt});
+        }
+    }
     /**
      * @param args the command line arguments
      */
@@ -70,7 +383,7 @@ public class StaffMenuGUI extends javax.swing.JFrame {
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
+                if ("Windows".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
                 }
@@ -81,9 +394,32 @@ public class StaffMenuGUI extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new StaffMenuGUI().setVisible(true));
+        //java.awt.EventQueue.invokeLater(() -> new StaffMenuGUI().setVisible(true));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnLogout;
+    private javax.swing.JButton btnMAdd;
+    private javax.swing.JButton btnMEdit;
+    private javax.swing.JButton btnMRemove;
+    private javax.swing.JComboBox<String> cbMembership;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JLabel lblMMembership;
+    private javax.swing.JLabel lblMName;
+    private javax.swing.JLabel lblMPassword;
+    private javax.swing.JLabel lblMUsername;
+    private javax.swing.JLabel lblWelcome;
+    private javax.swing.JPanel pDashboard;
+    private javax.swing.JPanel pManageClasses;
+    private javax.swing.JPanel pManageInventory;
+    private javax.swing.JPanel pManageMembers;
+    private javax.swing.JPanel pManageMembership;
+    private javax.swing.JPanel pManageStaff;
+    private javax.swing.JTable tblMembers;
+    private javax.swing.JTextField txtMName;
+    private javax.swing.JTextField txtMPassword;
+    private javax.swing.JTextField txtMUsername;
     // End of variables declaration//GEN-END:variables
 }
