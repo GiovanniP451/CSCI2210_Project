@@ -1,14 +1,9 @@
 
 import javax.swing.JOptionPane;
 
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
-
 /**
  *
- * @author falco
+ * @author Isiah John
  */
 public class StaffLoginGUI extends javax.swing.JFrame {
     
@@ -18,7 +13,10 @@ public class StaffLoginGUI extends javax.swing.JFrame {
     private StaffManager staffManager;
     private MemberManager memberManager;
     private MembershipManager membershipManager;
+    private CreditCardManager cardManager;
     private Facility facility;
+    private String memberFile;
+    private String staffFile;
     
     /**
      * Creates new form StaffLoginGUI
@@ -27,14 +25,16 @@ public class StaffLoginGUI extends javax.swing.JFrame {
         initComponents();
     }
     
-    public StaffLoginGUI(Login login, StaffManager sm, MemberManager mm, MembershipManager ms, Facility facility)
+    public StaffLoginGUI(Login login, StaffManager sm, MemberManager mm, MembershipManager ms,CreditCardManager ccManager, Facility facility)
     {
         this();
         this.loginObject = login;
         this.memberManager = mm;
         this.membershipManager = ms;
         this.staffManager = sm;
+        this.cardManager = ccManager;
         this.facility = facility;
+        staffManager.listStaff();
     }
 
     /**
@@ -56,6 +56,11 @@ public class StaffLoginGUI extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Staff Login");
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
+            }
+        });
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         lblSUsername.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
@@ -108,7 +113,7 @@ public class StaffLoginGUI extends javax.swing.JFrame {
         
         if(staff != null)
         {
-            new StaffMenuGUI(staff, memberManager, membershipManager, staffManager, facility).setVisible(true);
+            new StaffMenuGUI(staff, memberManager, membershipManager, staffManager, cardManager, facility).setVisible(true);
             this.dispose();
         }
         else
@@ -116,6 +121,10 @@ public class StaffLoginGUI extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "No Account Found with Username or Password");
         }
     }//GEN-LAST:event_btnSLoginActionPerformed
+
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        
+    }//GEN-LAST:event_formWindowOpened
 
     /**
      * @param args the command line arguments
@@ -139,7 +148,7 @@ public class StaffLoginGUI extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new StaffLoginGUI().setVisible(true));
+        //java.awt.EventQueue.invokeLater(() -> new StaffLoginGUI().setVisible(true));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

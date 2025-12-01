@@ -1,0 +1,2 @@
+Basic,19.99
+Premium, 49.99

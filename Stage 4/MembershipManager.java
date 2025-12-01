@@ -2,6 +2,10 @@
 
 @Author Isiah John
 */
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.util.ArrayList;
 
 public class MembershipManager {
@@ -10,13 +14,55 @@ public class MembershipManager {
     public MembershipManager()
     {
         memberships = new ArrayList<>();
-        defaultMemberships();
     }
     
-    public void defaultMemberships()
+    public boolean loadMembership(String membershipFile)
     {
-        memberships.add(new Membership("Basic", 19.99));
-        memberships.add(new Membership("Premium", 39.99));
+        memberships.clear();
+        try(BufferedReader br = new BufferedReader(new FileReader(membershipFile)))
+        {
+            String row;
+            while((row = br.readLine()) != null)
+            {
+                row = row.trim();
+                if(row.isEmpty())
+                {
+                    continue;
+                }
+                
+                String[] data = row.split(",");
+                if(data.length<2)
+                {
+                    continue;
+                }
+                String type = data[0].trim();
+                double price = Double.parseDouble(data[1].trim());
+                
+                memberships.add(new Membership(type,price));
+            }
+            return true;
+        }
+        catch(Exception e)
+        {
+            return false;
+        }
+    }
+    
+    public boolean saveMembershipFile(String membershipFile, ArrayList<String> tableData)
+    {
+        try(BufferedWriter bw = new BufferedWriter(new FileWriter(membershipFile)))
+        {
+            for(String row : tableData)
+            {
+                bw.write(row);
+                bw.newLine();
+            }
+            return true;
+        }
+        catch(Exception e)
+        {
+            return false;
+        }
     }
     
     public boolean createMembership(Membership membership)

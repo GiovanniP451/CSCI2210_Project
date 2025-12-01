@@ -1,7 +1,7 @@
 
 /**
  *
- * @author falco
+ * @author Isiah John
  */
 public class LoginGUI extends javax.swing.JFrame {
     
@@ -25,8 +25,8 @@ public class LoginGUI extends javax.swing.JFrame {
         cardManager = new CreditCardManager();
         facility = new Facility();
         login = new Login(memberManager, staffManager);
-        
-        memberManager.loadMembersFromFile("members.txt");
+        membershipManager.loadMembership("memberships.txt");
+        memberManager.loadMembersFromFile("members.txt",membershipManager);
         staffManager.loadStaffFromFile("staff.txt");
     }
 

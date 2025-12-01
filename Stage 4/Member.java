@@ -2,13 +2,11 @@
 
 
 public class Member {
-   
-	
+  
     private String name;
     private String username;
     private String password;
     private Membership membership;
-    
     
     public Member(String name, String username, String password) {
         this.name = name;
@@ -21,7 +19,6 @@ public class Member {
     public String getName() {
         return name;
     }
-    
     
     public String getUsername() {
         return username;

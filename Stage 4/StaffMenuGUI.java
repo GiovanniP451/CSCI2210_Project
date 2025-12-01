@@ -1,8 +1,3 @@
-
-import java.io.BufferedWriter;
-import java.io.FileOutputStream;
-import java.io.FileWriter;
-import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -10,7 +5,7 @@ import javax.swing.table.DefaultTableModel;
 
 /**
  *
- * @author falco
+ * @author Isiah John
  */
 public class StaffMenuGUI extends javax.swing.JFrame {
     
@@ -22,13 +17,13 @@ public class StaffMenuGUI extends javax.swing.JFrame {
     private MembershipManager membershipManager;
     private CreditCardManager cardManager;
     private Facility facility;
+    
 
     /**
      * Creates new form StaffMenuGUI
      */
     public StaffMenuGUI() {
         initComponents();
-        initComboBox();
     }
     
     public StaffMenuGUI(Staff st, MemberManager mm, MembershipManager ms, StaffManager sm, CreditCardManager ccManager, Facility facility)
@@ -43,11 +38,16 @@ public class StaffMenuGUI extends javax.swing.JFrame {
         this.facility = facility;
         
         lblWelcome.setText("Welcome " + staff.getName() + " to the Management System");
+        initComboBox();
     }
     
     public void initComboBox()
     {
-        //Come back Later
+        cbMembership.addItem("None");
+        for(Membership m : membershipManager.getMemberships())
+        {
+            cbMembership.addItem(m.getType());
+        }
     }
 
     /**
@@ -78,10 +78,33 @@ public class StaffMenuGUI extends javax.swing.JFrame {
         btnMAdd = new javax.swing.JButton();
         btnMEdit = new javax.swing.JButton();
         btnMRemove = new javax.swing.JButton();
-        pManageStaff = new javax.swing.JPanel();
-        pManageInventory = new javax.swing.JPanel();
         pManageMembership = new javax.swing.JPanel();
+        jPanel2 = new javax.swing.JPanel();
+        lblMembershipType = new javax.swing.JLabel();
+        txtMemType = new javax.swing.JTextField();
+        lblMembershipCost = new javax.swing.JLabel();
+        txtMemCost = new javax.swing.JTextField();
+        btnMemRemove = new javax.swing.JButton();
+        btnMemAdd = new javax.swing.JButton();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        tblMemberships = new javax.swing.JTable();
         pManageClasses = new javax.swing.JPanel();
+        pManageStaff = new javax.swing.JPanel();
+        jPanel3 = new javax.swing.JPanel();
+        lblSName = new javax.swing.JLabel();
+        txtSName = new javax.swing.JTextField();
+        lblSUsername = new javax.swing.JLabel();
+        txtSUsername = new javax.swing.JTextField();
+        lblSPassword = new javax.swing.JLabel();
+        txtSPassword = new javax.swing.JTextField();
+        btnSEdit = new javax.swing.JButton();
+        btnSRemove = new javax.swing.JButton();
+        btnSAdd = new javax.swing.JButton();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        tblStaff = new javax.swing.JTable();
+        pManageInventory = new javax.swing.JPanel();
+        jPanel4 = new javax.swing.JPanel();
+        jComboBox1 = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Staff Management Menu");
@@ -141,9 +164,14 @@ public class StaffMenuGUI extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        tblMembers.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblMembersMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tblMembers);
 
-        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "New Member"));
+        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "Member Info"));
 
         lblMName.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         lblMName.setText("Name");
@@ -171,8 +199,18 @@ public class StaffMenuGUI extends javax.swing.JFrame {
         });
 
         btnMEdit.setText("Update");
+        btnMEdit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnMEditActionPerformed(evt);
+            }
+        });
 
         btnMRemove.setText("Remove");
+        btnMRemove.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnMRemoveActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -249,41 +287,105 @@ public class StaffMenuGUI extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("Members", pManageMembers);
 
-        javax.swing.GroupLayout pManageStaffLayout = new javax.swing.GroupLayout(pManageStaff);
-        pManageStaff.setLayout(pManageStaffLayout);
-        pManageStaffLayout.setHorizontalGroup(
-            pManageStaffLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 630, Short.MAX_VALUE)
+        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "Membership Info"));
+        jPanel2.setPreferredSize(new java.awt.Dimension(216, 383));
+
+        lblMembershipType.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lblMembershipType.setText("Type");
+
+        txtMemType.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+
+        lblMembershipCost.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lblMembershipCost.setText("Cost");
+
+        txtMemCost.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+
+        btnMemRemove.setText("Remove");
+        btnMemRemove.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnMemRemoveActionPerformed(evt);
+            }
+        });
+
+        btnMemAdd.setText("Add");
+        btnMemAdd.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnMemAddActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txtMemCost)
+                    .addComponent(txtMemType)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblMembershipType)
+                            .addComponent(lblMembershipCost))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(btnMemAdd, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnMemRemove, javax.swing.GroupLayout.DEFAULT_SIZE, 192, Short.MAX_VALUE))
+                .addContainerGap())
         );
-        pManageStaffLayout.setVerticalGroup(
-            pManageStaffLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 395, Short.MAX_VALUE)
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(16, 16, 16)
+                .addComponent(lblMembershipType)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtMemType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(lblMembershipCost)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtMemCost, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 63, Short.MAX_VALUE)
+                .addComponent(btnMemRemove)
+                .addGap(18, 18, 18)
+                .addComponent(btnMemAdd)
+                .addGap(106, 106, 106))
         );
 
-        jTabbedPane1.addTab("Staff", pManageStaff);
+        tblMemberships.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
 
-        javax.swing.GroupLayout pManageInventoryLayout = new javax.swing.GroupLayout(pManageInventory);
-        pManageInventory.setLayout(pManageInventoryLayout);
-        pManageInventoryLayout.setHorizontalGroup(
-            pManageInventoryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 630, Short.MAX_VALUE)
-        );
-        pManageInventoryLayout.setVerticalGroup(
-            pManageInventoryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 395, Short.MAX_VALUE)
-        );
+            },
+            new String [] {
+                "Type", "Cost"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false
+            };
 
-        jTabbedPane1.addTab("Inventory", pManageInventory);
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane2.setViewportView(tblMemberships);
 
         javax.swing.GroupLayout pManageMembershipLayout = new javax.swing.GroupLayout(pManageMembership);
         pManageMembership.setLayout(pManageMembershipLayout);
         pManageMembershipLayout.setHorizontalGroup(
             pManageMembershipLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 630, Short.MAX_VALUE)
+            .addGroup(pManageMembershipLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 393, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(9, Short.MAX_VALUE))
         );
         pManageMembershipLayout.setVerticalGroup(
             pManageMembershipLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 395, Short.MAX_VALUE)
+            .addGroup(pManageMembershipLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(pManageMembershipLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 389, Short.MAX_VALUE)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)))
         );
 
         jTabbedPane1.addTab("Membership", pManageMembership);
@@ -301,6 +403,171 @@ public class StaffMenuGUI extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("Classes", pManageClasses);
 
+        jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "Staff Info"));
+
+        lblSName.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lblSName.setText("Name");
+
+        txtSName.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+
+        lblSUsername.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lblSUsername.setText("Username");
+
+        txtSUsername.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+
+        lblSPassword.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lblSPassword.setText("Password");
+
+        txtSPassword.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+
+        btnSEdit.setText("Update");
+        btnSEdit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSEditActionPerformed(evt);
+            }
+        });
+
+        btnSRemove.setText("Remove");
+        btnSRemove.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSRemoveActionPerformed(evt);
+            }
+        });
+
+        btnSAdd.setText("Add Staff");
+        btnSAdd.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSAddActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnSAdd, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(txtSName)
+                    .addComponent(txtSUsername)
+                    .addComponent(txtSPassword)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblSName)
+                            .addComponent(lblSUsername)
+                            .addComponent(lblSPassword))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(btnSEdit, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnSRemove, javax.swing.GroupLayout.DEFAULT_SIZE, 90, Short.MAX_VALUE)))
+                .addContainerGap())
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(16, 16, 16)
+                .addComponent(lblSName)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtSName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(lblSUsername)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(txtSUsername, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(lblSPassword)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(txtSPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(26, 26, 26)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnSEdit)
+                    .addComponent(btnSRemove))
+                .addGap(18, 18, 18)
+                .addComponent(btnSAdd)
+                .addContainerGap(46, Short.MAX_VALUE))
+        );
+
+        tblStaff.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Name", "Username", "Password"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane3.setViewportView(tblStaff);
+
+        javax.swing.GroupLayout pManageStaffLayout = new javax.swing.GroupLayout(pManageStaff);
+        pManageStaff.setLayout(pManageStaffLayout);
+        pManageStaffLayout.setHorizontalGroup(
+            pManageStaffLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pManageStaffLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 383, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(18, Short.MAX_VALUE))
+        );
+        pManageStaffLayout.setVerticalGroup(
+            pManageStaffLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pManageStaffLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(pManageStaffLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 392, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        jTabbedPane1.addTab("Staff", pManageStaff);
+
+        jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "Inventory"));
+
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(122, Short.MAX_VALUE))
+        );
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addGap(19, 19, 19)
+                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(324, Short.MAX_VALUE))
+        );
+
+        javax.swing.GroupLayout pManageInventoryLayout = new javax.swing.GroupLayout(pManageInventory);
+        pManageInventory.setLayout(pManageInventoryLayout);
+        pManageInventoryLayout.setHorizontalGroup(
+            pManageInventoryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pManageInventoryLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(412, Short.MAX_VALUE))
+        );
+        pManageInventoryLayout.setVerticalGroup(
+            pManageInventoryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pManageInventoryLayout.createSequentialGroup()
+                .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        jTabbedPane1.addTab("Inventory", pManageInventory);
+
         getContentPane().add(jTabbedPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 630, 430));
 
         setSize(new java.awt.Dimension(654, 448));
@@ -314,30 +581,22 @@ public class StaffMenuGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_btnLogoutActionPerformed
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
-        // TODO add your handling code here:
+
         loadMemberTable();
+        loadMembershipTable();
+        loadStaffTable();
     }//GEN-LAST:event_formWindowOpened
 
     private void btnMAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMAddActionPerformed
         try
         {
-            //Code membership combo box later
             
-            String[] tableRow = {txtMName.getText(),txtMUsername.getText(),txtMPassword.getText()};
+            String[] tableRow = {txtMName.getText(),txtMUsername.getText(),txtMPassword.getText(),cbMembership.getSelectedItem().toString()};
             DefaultTableModel model = (DefaultTableModel) tblMembers.getModel();
             model.addRow(tableRow);
             clearFields();
-            ArrayList<String> tableData = new ArrayList<>();
             
-            for(int i = 0; i< model.getRowCount(); i++)
-            {
-                String name = model.getValueAt(i,0).toString();
-                String username = model.getValueAt(i,1).toString();
-                String password = model.getValueAt(i,2).toString();
-                
-                String row = (name + "," + username + "," + password);
-                tableData.add(row);
-            }
+            ArrayList<String> tableData = getTableData(model);
             if(memberManager.saveMemberFile("members.txt", tableData))
             {
                 JOptionPane.showMessageDialog(this,"Saved to Member File");
@@ -349,12 +608,308 @@ public class StaffMenuGUI extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnMAddActionPerformed
 
+    private void btnMRemoveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMRemoveActionPerformed
+        int row = tblMembers.getSelectedRow();
+        if(row < 0)
+        {
+            JOptionPane.showMessageDialog(this,"You need to select a row.");
+        }
+        else
+        {
+            DefaultTableModel model = (DefaultTableModel) tblMembers.getModel();
+            int result = JOptionPane.showConfirmDialog(null, "Do you want to remove this member from file?", "Confirmation", JOptionPane.YES_NO_OPTION);
+            if(result == JOptionPane.YES_OPTION)
+            {
+                model.removeRow(row);
+                
+                ArrayList<String> tableData = getTableData(model);
+                memberManager.saveMemberFile("members.txt",tableData);
+                JOptionPane.showMessageDialog(this,"Member Delected Successfully from File");
+            }
+            else if(result == JOptionPane.NO_OPTION)
+            {
+                return;
+            }
+        }
+    }//GEN-LAST:event_btnMRemoveActionPerformed
+
+    private void tblMembersMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblMembersMouseClicked
+        int row = tblMembers.getSelectedRow();
+        if(row<0)
+        {
+            return;
+        }
+        String name = tblMembers.getValueAt(row,0).toString();
+        String username = tblMembers.getValueAt(row,1).toString();
+        String password = tblMembers.getValueAt(row,2).toString();
+        String memberships = tblMembers.getValueAt(row,3).toString();
+        Member selectedMember = memberManager.findMemberByUsername(username);
+        
+        if(selectedMember == null)
+        {
+            return;
+        }
+        
+        txtMName.setText(selectedMember.getName());
+        txtMUsername.setText(selectedMember.getUsername());
+        txtMPassword.setText(selectedMember.getPassword());
+        cbMembership.setSelectedItem(memberships);
+        
+    }//GEN-LAST:event_tblMembersMouseClicked
+
+    private void btnMEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMEditActionPerformed
+        int row = tblMembers.getSelectedRow();
+        if(row<0)
+        {
+            JOptionPane.showMessageDialog(this,"Please Select a Member to Update info");
+            return;
+        }
+        
+        String newName = txtMName.getText().trim();
+        String newUsername = txtMUsername.getText().trim();
+        String newPassword = txtMPassword.getText().trim();
+        String membershipType = cbMembership.getSelectedItem().toString();
+        
+        String originalUsername = tblMembers.getValueAt(row,1).toString();
+        Member member = memberManager.findMemberByUsername(originalUsername);
+        
+        if(member == null)
+        {
+            JOptionPane.showMessageDialog(this, "Member not found");
+            return;
+        }
+        
+        member.setName(newName);
+        member.setUsername(newUsername);
+        member.setPassword(newPassword);
+        
+        if(membershipType.equals("None"))
+        {
+            member.setMembership(null);
+        }
+        else
+        {
+            Membership m = membershipManager.findMembership(membershipType);
+            member.setMembership(m);
+        }
+        
+        DefaultTableModel model = (DefaultTableModel) tblMembers.getModel();
+        model.setValueAt(newName,row,0);
+        model.setValueAt(newUsername,row,1);
+        model.setValueAt(newPassword,row,2);
+        model.setValueAt(membershipType,row,3);
+        
+        ArrayList<String> tableData = getTableData(model);
+        memberManager.saveMemberFile("members.txt",tableData);
+        JOptionPane.showMessageDialog(this,"Member Updated Successfully");
+    }//GEN-LAST:event_btnMEditActionPerformed
+
+    private void btnMemRemoveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMemRemoveActionPerformed
+        int row = tblMemberships.getSelectedRow();
+        DefaultTableModel model = (DefaultTableModel) tblMemberships.getModel();
+        if(row<0)
+        {
+            JOptionPane.showMessageDialog(this,"You need to select a Membership to remove.");
+        }
+        else
+        {
+            String type = tblMemberships.getValueAt(row,0).toString();
+            
+            for(Member m : memberManager.getMembers())
+            {
+                if(m.getMembership() != null && m.getMembership().getType().equalsIgnoreCase(type))
+                {
+                    JOptionPane.showMessageDialog(this, "Cannot delete this Membership.\n" +
+                            "One or more members currently have this membership!", "Delete Blocked",JOptionPane.WARNING_MESSAGE);
+                    return;
+                }    
+            }  
+            //Get Confirmation for removing
+            int confirm = JOptionPane.showConfirmDialog(this,"Do you want to remove " + type + "?", "Confirm Removal", JOptionPane.YES_NO_OPTION);
+            if(confirm != JOptionPane.YES_OPTION)
+            {
+                return;
+            }
+            //REmoving Membership from the membershipmanager
+            if(!membershipManager.removeMembership(type))
+            {
+                JOptionPane.showMessageDialog(this,"Failed to Remove membership from Manager", "Error",JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            //saves to file
+            ArrayList<String> tableData = getMembershipTableData(model);
+            membershipManager.saveMembershipFile("memberships.txt", tableData);
+            
+            //updates table
+            model.setRowCount(0);
+            for(Membership m : membershipManager.getMemberships())
+            {
+                model.addRow(new Object[]{m.getType(),m.getCost()});
+            }
+            //updates combobox
+            cbMembership.removeAllItems();
+            cbMembership.addItem("None");
+            for(Membership m : membershipManager.getMemberships())
+            {
+                cbMembership.addItem(m.getType());
+            }
+        }    
+    }//GEN-LAST:event_btnMemRemoveActionPerformed
+
+    private void btnMemAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMemAddActionPerformed
+        try
+        {
+            String[] tableRow = {txtMemType.getText(),txtMemCost.getText()};
+            DefaultTableModel model = (DefaultTableModel) tblMemberships.getModel();
+            model.addRow(tableRow);
+            
+            ArrayList<String> tableData = getMembershipTableData(model);
+            
+            if(membershipManager.saveMembershipFile("memberships.txt", tableData))
+            {
+                JOptionPane.showMessageDialog(this,"Saved to Membership File");
+            }
+        }
+        catch(Exception e)
+        {
+            JOptionPane.showMessageDialog(this,"Failed to Add Membership");
+        }
+    }//GEN-LAST:event_btnMemAddActionPerformed
+
+    private void btnSAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSAddActionPerformed
+        try
+        {
+            String[] tableRow = {txtSName.getText(),txtSUsername.getText(),txtSPassword.getText()};
+            DefaultTableModel model = (DefaultTableModel) tblStaff.getModel();
+            model.addRow(tableRow);
+            ArrayList<String> tableData = getStaffTableData(model);
+            if(staffManager.saveStaffFile("staff.txt", tableData))
+            {
+                JOptionPane.showMessageDialog(this,"Saved to Staff File");
+            }
+        }
+        catch(Exception e)
+        {
+            JOptionPane.showMessageDialog(this, "Failed to Add Staff");
+        }
+    }//GEN-LAST:event_btnSAddActionPerformed
+
+    private void btnSRemoveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSRemoveActionPerformed
+
+        int row = tblStaff.getSelectedRow();
+        if(row<0)
+        {
+            JOptionPane.showMessageDialog(this,"You need to select a row");
+        }
+        else
+        {
+            DefaultTableModel model = (DefaultTableModel) tblStaff.getModel();
+            int result = JOptionPane.showConfirmDialog(null, "Do you want to remove this staff from file?", "Confirmation", JOptionPane.YES_NO_OPTION);
+            if(result == JOptionPane.YES_OPTION)
+            {
+                model.removeRow(row);
+                ArrayList<String> tableData = getTableData(model);
+                staffManager.saveStaffFile("staff.txt", tableData);
+                JOptionPane.showMessageDialog(this,"Staff Delected Successfully from File");
+            }
+            else if(result == JOptionPane.NO_OPTION)
+            {
+                return;
+            }
+        }
+    }//GEN-LAST:event_btnSRemoveActionPerformed
+
+    private void btnSEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSEditActionPerformed
+        int row = tblStaff.getSelectedRow();
+        if(row<0)
+        {
+            JOptionPane.showMessageDialog(this, "Please Select a Staff to Update info");
+            return;
+        }
+        String newName = txtSName.getText().trim();
+        String newUsername = txtSUsername.getText().trim();
+        String newPassword = txtSPassword.getText().trim();
+        
+        String originalUsername = tblStaff.getValueAt(row,1).toString();
+        Staff staff = staffManager.findStaffByUsername(originalUsername);
+        
+        if(staff == null)
+        {
+            JOptionPane.showMessageDialog(this,"Staff not Found");
+            return;
+        }
+        staff.setName(newName);
+        staff.setUsername(newUsername);
+        staff.setPassword(newPassword);
+        
+        DefaultTableModel model = (DefaultTableModel) tblStaff.getModel();
+        model.setValueAt(newName,row,0);
+        model.setValueAt(newUsername,row,1);
+        model.setValueAt(newPassword,row,2);
+        
+        ArrayList<String> tableData = getStaffTableData(model);
+        staffManager.saveStaffFile("staff.txt", tableData);
+        JOptionPane.showMessageDialog(this,"Staff Updated Successfully");
+    }//GEN-LAST:event_btnSEditActionPerformed
+    
+    private ArrayList<String> getTableData(DefaultTableModel model)
+    {
+        ArrayList<String> tableData = new ArrayList<>();
+            
+        for(int i = 0; i< model.getRowCount(); i++)
+        {
+            String name = model.getValueAt(i,0).toString();
+            String username = model.getValueAt(i,1).toString();
+            String password = model.getValueAt(i,2).toString();
+            String membershipType = model.getValueAt(i,3).toString();
+                
+            String row = (name + "," + username + "," + password + "," + membershipType);
+            tableData.add(row);
+        }
+        return tableData;
+    }
+    
+    private ArrayList<String> getStaffTableData(DefaultTableModel model)
+    {
+        ArrayList<String> tableData = new ArrayList<>();
+        for(int i = 0; i < model.getRowCount(); i++)
+        {
+            String name = model.getValueAt(i,0).toString();
+            String username = model.getValueAt(i,1).toString();
+            String password = model.getValueAt(i,2).toString();
+            String row = (name + "," + username + "," + password);
+            tableData.add(row);
+        }   
+        return tableData;
+    }
+    
+    private ArrayList<String> getMembershipTableData(DefaultTableModel model)
+    {
+        ArrayList<String> tableData = new ArrayList<>();
+        for(int i = 0; i<model.getRowCount(); i++)
+        {
+            String type = model.getValueAt(i,0).toString();
+            String cost = model.getValueAt(i, 1).toString();
+            String row = (type+","+cost);
+            tableData.add(row);
+        }
+        return tableData;
+    }
     
     private void clearFields()
     {
         txtMName.setText("");
         txtMUsername.setText("");
         txtMPassword.setText("");
+    }
+    
+    private void loadMembershipTable()
+    {
+        DefaultTableModel model = (DefaultTableModel) tblMemberships.getModel();
+        for(Membership ms : membershipManager.getMemberships())
+        {
+            model.addRow(new Object[]{ms.getType(),ms.getCost()});
+        }
     }
     
     private void loadMemberTable()
@@ -370,6 +925,15 @@ public class StaffMenuGUI extends javax.swing.JFrame {
             
             model.addRow(new Object[]{m.getName(),m.getUsername(), m.getPassword(),
                 membershipTxt});
+        }
+    }
+    
+    private void loadStaffTable()
+    {
+        DefaultTableModel model = (DefaultTableModel) tblStaff.getModel();
+        for(Staff s : staffManager.getStaffList())
+        {
+            model.addRow(new Object[]{s.getName(),s.getUsername(),s.getPassword()});
         }
     }
     /**
@@ -402,14 +966,30 @@ public class StaffMenuGUI extends javax.swing.JFrame {
     private javax.swing.JButton btnMAdd;
     private javax.swing.JButton btnMEdit;
     private javax.swing.JButton btnMRemove;
+    private javax.swing.JButton btnMemAdd;
+    private javax.swing.JButton btnMemRemove;
+    private javax.swing.JButton btnSAdd;
+    private javax.swing.JButton btnSEdit;
+    private javax.swing.JButton btnSRemove;
     private javax.swing.JComboBox<String> cbMembership;
+    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JLabel lblMMembership;
     private javax.swing.JLabel lblMName;
     private javax.swing.JLabel lblMPassword;
     private javax.swing.JLabel lblMUsername;
+    private javax.swing.JLabel lblMembershipCost;
+    private javax.swing.JLabel lblMembershipType;
+    private javax.swing.JLabel lblSName;
+    private javax.swing.JLabel lblSPassword;
+    private javax.swing.JLabel lblSUsername;
     private javax.swing.JLabel lblWelcome;
     private javax.swing.JPanel pDashboard;
     private javax.swing.JPanel pManageClasses;
@@ -418,8 +998,15 @@ public class StaffMenuGUI extends javax.swing.JFrame {
     private javax.swing.JPanel pManageMembership;
     private javax.swing.JPanel pManageStaff;
     private javax.swing.JTable tblMembers;
+    private javax.swing.JTable tblMemberships;
+    private javax.swing.JTable tblStaff;
     private javax.swing.JTextField txtMName;
     private javax.swing.JTextField txtMPassword;
     private javax.swing.JTextField txtMUsername;
+    private javax.swing.JTextField txtMemCost;
+    private javax.swing.JTextField txtMemType;
+    private javax.swing.JTextField txtSName;
+    private javax.swing.JTextField txtSPassword;
+    private javax.swing.JTextField txtSUsername;
     // End of variables declaration//GEN-END:variables
 }

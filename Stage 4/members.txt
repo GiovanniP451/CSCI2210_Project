@@ -1,4 +1,4 @@
-Alice,alic3,password
-Josh,joshH,pass1234
-Issac,1ssac,12345678
-Eric,ericthecool,password143
+Alice,alic3,password,Basic
+Josh,joshH,pass1234,Basic
+Issac,1ssac,12345678,Basic
+ijohn,userIsiah,passIsiah,Basic

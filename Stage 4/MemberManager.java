@@ -7,18 +7,18 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
-import java.io.IOException;
 import java.util.ArrayList;
 
 public class MemberManager {
     private ArrayList<Member> memberList;
+    //private MembershipManager membershipManager;
     
     public MemberManager()
     {
         this.memberList = new ArrayList<>();
     }
     
-    public boolean loadMembersFromFile(String MemberFile)
+    public boolean loadMembersFromFile(String MemberFile, MembershipManager membershipManager)
     {
         memberList.clear();
         try(BufferedReader br = new BufferedReader(new FileReader(MemberFile)))
@@ -34,35 +34,50 @@ public class MemberManager {
                 
                 String[] data = row.split(",");
                 
-                if(data.length != 3)
+                if(data.length < 3)
                 {
                     continue;
                 }
                 String name = data[0].trim();
                 String username = data[1].trim();
                 String password = data[2].trim();
-                addMember(new Member(name, username, password));
+                
+                Member m = new Member(name,username,password);
+                
+                if(data.length>=4)
+                {
+                    String membershipType = data[3].trim();
+                    if(!membershipType.equalsIgnoreCase("None"))
+                    {
+                        Membership found = membershipManager.findMembership(membershipType);
+                        if(found != null)
+                        {
+                            m.setMembership(found);
+                        }
+                    }    
+                }
+                memberList.add(m);
             }
             return true;
         }
-        catch(IOException e)
+        catch(Exception e)
         {
             return false;
         }
     }
     
-    public boolean saveMemberFile(String MemberFile, ArrayList<String> data)
+    public boolean saveMemberFile(String MemberFile, ArrayList<String> tableData)
     {
         try(BufferedWriter bw = new BufferedWriter(new FileWriter(MemberFile)))
         {
-            for(String row : data)
+            for(String row : tableData)
             {
                 bw.write(row);
                 bw.newLine();
             }
             return true;
         }
-        catch(IOException e)
+        catch(Exception e)
         {
             return false;
         }
