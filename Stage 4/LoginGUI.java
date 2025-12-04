@@ -28,6 +28,7 @@ public class LoginGUI extends javax.swing.JFrame {
         membershipManager.loadMembership("memberships.txt");
         memberManager.loadMembersFromFile("members.txt",membershipManager);
         staffManager.loadStaffFromFile("staff.txt");
+        facility.loadFacilityFile("facilityArea.txt");
     }
 
     /**

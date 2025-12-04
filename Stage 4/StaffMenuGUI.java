@@ -38,15 +38,30 @@ public class StaffMenuGUI extends javax.swing.JFrame {
         this.facility = facility;
         
         lblWelcome.setText("Welcome " + staff.getName() + " to the Management System");
-        initComboBox();
+        initMembershipComboBox();
+        initFacilityInventoryComboBox();
     }
     
-    public void initComboBox()
+    public void initMembershipComboBox()
     {
+        //cbMembership.removeAllItems();
         cbMembership.addItem("None");
         for(Membership m : membershipManager.getMemberships())
         {
             cbMembership.addItem(m.getType());
+        }
+    }
+    
+    public void initFacilityInventoryComboBox()
+    {
+        //cbFacilityAreaInvent.removeAllItems();
+        cbFacilityAreaInvent.addItem("None");
+        for(Area a : facility.getAreas())
+        {
+            if(a.hasInventory())
+            {
+                cbFacilityAreaInvent.addItem(a.getName());
+            }
         }
     }
 
@@ -59,7 +74,9 @@ public class StaffMenuGUI extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jTabbedPane1 = new javax.swing.JTabbedPane();
+        btnGFacilityInventory = new javax.swing.ButtonGroup();
+        btnGFacilityClasses = new javax.swing.ButtonGroup();
+        pManageFacility = new javax.swing.JTabbedPane();
         pDashboard = new javax.swing.JPanel();
         lblWelcome = new javax.swing.JLabel();
         btnLogout = new javax.swing.JButton();
@@ -104,7 +121,25 @@ public class StaffMenuGUI extends javax.swing.JFrame {
         tblStaff = new javax.swing.JTable();
         pManageInventory = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        cbFacilityAreaInvent = new javax.swing.JComboBox<>();
+        jLabel1 = new javax.swing.JLabel();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
+        jPanel5 = new javax.swing.JPanel();
+        jPanel6 = new javax.swing.JPanel();
+        lblFName = new javax.swing.JLabel();
+        txtFName = new javax.swing.JTextField();
+        rbtnYesi = new javax.swing.JRadioButton();
+        rbtnNoi = new javax.swing.JRadioButton();
+        lblFInventory = new javax.swing.JLabel();
+        btnFEdit = new javax.swing.JButton();
+        btnFAdd = new javax.swing.JButton();
+        btnFRemove = new javax.swing.JButton();
+        lblFClasses = new javax.swing.JLabel();
+        rbtnFYesc = new javax.swing.JRadioButton();
+        rbtnFNoc = new javax.swing.JRadioButton();
+        jScrollPane5 = new javax.swing.JScrollPane();
+        tblFacility = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Staff Management Menu");
@@ -114,6 +149,12 @@ public class StaffMenuGUI extends javax.swing.JFrame {
             }
         });
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        pManageFacility.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                pManageFacilityStateChanged(evt);
+            }
+        });
 
         lblWelcome.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
 
@@ -146,7 +187,7 @@ public class StaffMenuGUI extends javax.swing.JFrame {
                 .addContainerGap(136, Short.MAX_VALUE))
         );
 
-        jTabbedPane1.addTab("Dashboard", pDashboard);
+        pManageFacility.addTab("Dashboard", pDashboard);
 
         tblMembers.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -285,7 +326,7 @@ public class StaffMenuGUI extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        jTabbedPane1.addTab("Members", pManageMembers);
+        pManageFacility.addTab("Members", pManageMembers);
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "Membership Info"));
         jPanel2.setPreferredSize(new java.awt.Dimension(216, 383));
@@ -388,7 +429,7 @@ public class StaffMenuGUI extends javax.swing.JFrame {
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)))
         );
 
-        jTabbedPane1.addTab("Membership", pManageMembership);
+        pManageFacility.addTab("Membership", pManageMembership);
 
         javax.swing.GroupLayout pManageClassesLayout = new javax.swing.GroupLayout(pManageClasses);
         pManageClasses.setLayout(pManageClassesLayout);
@@ -401,7 +442,7 @@ public class StaffMenuGUI extends javax.swing.JFrame {
             .addGap(0, 395, Short.MAX_VALUE)
         );
 
-        jTabbedPane1.addTab("Classes", pManageClasses);
+        pManageFacility.addTab("Classes", pManageClasses);
 
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "Staff Info"));
 
@@ -527,11 +568,11 @@ public class StaffMenuGUI extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jTabbedPane1.addTab("Staff", pManageStaff);
+        pManageFacility.addTab("Staff", pManageStaff);
 
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "Inventory"));
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jLabel1.setText("Facility Areas w/ Inventory");
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -539,16 +580,38 @@ public class StaffMenuGUI extends javax.swing.JFrame {
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(122, Short.MAX_VALUE))
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(cbFacilityAreaInvent, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(54, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGap(19, 19, 19)
-                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(324, Short.MAX_VALUE))
+                .addContainerGap()
+                .addComponent(jLabel1)
+                .addGap(8, 8, 8)
+                .addComponent(cbFacilityAreaInvent, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(313, Short.MAX_VALUE))
         );
+
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Id", "Name", "Quantity", "Price"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane4.setViewportView(jTable1);
 
         javax.swing.GroupLayout pManageInventoryLayout = new javax.swing.GroupLayout(pManageInventory);
         pManageInventory.setLayout(pManageInventoryLayout);
@@ -557,18 +620,179 @@ public class StaffMenuGUI extends javax.swing.JFrame {
             .addGroup(pManageInventoryLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(412, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 390, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(12, Short.MAX_VALUE))
         );
         pManageInventoryLayout.setVerticalGroup(
             pManageInventoryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pManageInventoryLayout.createSequentialGroup()
-                .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(pManageInventoryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(pManageInventoryLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
 
-        jTabbedPane1.addTab("Inventory", pManageInventory);
+        pManageFacility.addTab("Inventory", pManageInventory);
 
-        getContentPane().add(jTabbedPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 630, 430));
+        jPanel6.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "Facility Areas"));
+
+        lblFName.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lblFName.setText("Name");
+
+        txtFName.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+
+        btnGFacilityInventory.add(rbtnYesi);
+        rbtnYesi.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        rbtnYesi.setText("Yes");
+
+        btnGFacilityInventory.add(rbtnNoi);
+        rbtnNoi.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        rbtnNoi.setSelected(true);
+        rbtnNoi.setText("No");
+
+        lblFInventory.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lblFInventory.setText("Will This Have an Inventory?");
+
+        btnFEdit.setText("Update");
+        btnFEdit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnFEditActionPerformed(evt);
+            }
+        });
+
+        btnFAdd.setText("Add Facility Area");
+        btnFAdd.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnFAddActionPerformed(evt);
+            }
+        });
+
+        btnFRemove.setText("Remove");
+        btnFRemove.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnFRemoveActionPerformed(evt);
+            }
+        });
+
+        lblFClasses.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lblFClasses.setText("Will this host Class session?");
+
+        btnGFacilityClasses.add(rbtnFYesc);
+        rbtnFYesc.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        rbtnFYesc.setText("Yes");
+
+        btnGFacilityClasses.add(rbtnFNoc);
+        rbtnFNoc.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        rbtnFNoc.setSelected(true);
+        rbtnFNoc.setText("No");
+
+        javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
+        jPanel6.setLayout(jPanel6Layout);
+        jPanel6Layout.setHorizontalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel6Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnFAdd, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(txtFName)
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addComponent(btnFEdit, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnFRemove, javax.swing.GroupLayout.DEFAULT_SIZE, 86, Short.MAX_VALUE))
+                    .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(lblFName)
+                        .addGroup(jPanel6Layout.createSequentialGroup()
+                            .addComponent(rbtnYesi)
+                            .addGap(18, 18, 18)
+                            .addComponent(rbtnNoi))
+                        .addComponent(lblFInventory, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(lblFClasses, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addComponent(rbtnFYesc)
+                        .addGap(18, 18, 18)
+                        .addComponent(rbtnFNoc)))
+                .addContainerGap())
+        );
+        jPanel6Layout.setVerticalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel6Layout.createSequentialGroup()
+                .addGap(8, 8, 8)
+                .addComponent(lblFName)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtFName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(lblFInventory)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(rbtnYesi)
+                    .addComponent(rbtnNoi))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(lblFClasses)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 16, Short.MAX_VALUE)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(rbtnFYesc)
+                    .addComponent(rbtnFNoc))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnFEdit)
+                    .addComponent(btnFRemove))
+                .addGap(18, 18, 18)
+                .addComponent(btnFAdd)
+                .addGap(14, 14, 14))
+        );
+
+        tblFacility.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Area Name", "Inventory?", "Classes?"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tblFacility.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblFacilityMouseClicked(evt);
+            }
+        });
+        jScrollPane5.setViewportView(tblFacility);
+
+        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
+        jPanel5.setLayout(jPanel5Layout);
+        jPanel5Layout.setHorizontalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(12, 12, 12)
+                .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 371, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 30, Short.MAX_VALUE))
+        );
+        jPanel5Layout.setVerticalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 384, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(16, 16, 16))
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addGap(40, 40, 40)
+                .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        pManageFacility.addTab("Facility", jPanel5);
+
+        getContentPane().add(pManageFacility, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 630, 430));
 
         setSize(new java.awt.Dimension(654, 448));
         setLocationRelativeTo(null);
@@ -585,6 +809,7 @@ public class StaffMenuGUI extends javax.swing.JFrame {
         loadMemberTable();
         loadMembershipTable();
         loadStaffTable();
+        loadFacilityTable();
     }//GEN-LAST:event_formWindowOpened
 
     private void btnMAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMAddActionPerformed
@@ -851,6 +1076,107 @@ public class StaffMenuGUI extends javax.swing.JFrame {
         staffManager.saveStaffFile("staff.txt", tableData);
         JOptionPane.showMessageDialog(this,"Staff Updated Successfully");
     }//GEN-LAST:event_btnSEditActionPerformed
+
+    private void btnFAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFAddActionPerformed
+        try
+        {
+            String facilityName = txtFName.getText().trim();
+            boolean hasInventory = rbtnYesi.isSelected();
+            boolean hasClasses = rbtnFYesc.isSelected();
+            
+            facility.addArea(facilityName, hasInventory,hasClasses);
+            loadFacilityTable();
+            
+            DefaultTableModel model = (DefaultTableModel) tblFacility.getModel();
+            ArrayList<String> tableData = getFacilityTableData(model);
+            if(facility.saveFacilityFile("facilityArea.txt", tableData))
+            {
+                JOptionPane.showMessageDialog(this, "Saved to Facility File");
+            }
+        }
+        catch(Exception e)
+        {
+            JOptionPane.showMessageDialog(this,"Failed to Add Facility Area to List file");
+        }    
+    }//GEN-LAST:event_btnFAddActionPerformed
+
+    private void tblFacilityMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblFacilityMouseClicked
+        int row = tblFacility.getSelectedRow();
+        if(row<0)
+        {
+            return;
+        }
+        String fName = tblFacility.getValueAt(row, 0).toString();
+        String hasIn = tblFacility.getValueAt(row, 1).toString();
+        String hasCl = tblFacility.getValueAt(row, 2).toString();
+        
+        Area selectedArea = facility.findArea(fName);
+        if(selectedArea == null)
+        {
+            return;
+        }
+        txtFName.setText(selectedArea.getName());
+        
+        rbtnYesi.setSelected(selectedArea.hasInventory());
+        rbtnNoi.setSelected(!selectedArea.hasInventory());
+        
+        rbtnFYesc.setSelected(selectedArea.hasClasses());
+        rbtnFNoc.setSelected(!selectedArea.hasClasses());
+    }//GEN-LAST:event_tblFacilityMouseClicked
+
+    private void btnFEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFEditActionPerformed
+        int row = tblFacility.getSelectedRow();
+        if(row<0)
+        {
+            JOptionPane.showMessageDialog(this, "Please Select a Facility to Update");
+            return;
+        }
+        
+        
+        String oldName = tblFacility.getValueAt(row, 0).toString();
+        String newName = txtFName.getText().trim();
+        boolean newChoiceInv = rbtnYesi.isSelected();
+        boolean newChoiceClass = rbtnFYesc.isSelected();
+        
+        facility.updateArea(oldName, newName, newChoiceInv, newChoiceClass);
+        loadFacilityTable();
+        
+        DefaultTableModel model = (DefaultTableModel) tblFacility.getModel();
+        ArrayList<String> tableData = getFacilityTableData(model);
+        facility.saveFacilityFile("facilityArea.txt", tableData);
+        JOptionPane.showMessageDialog(this,"Facility Area updated Successfully");
+        
+    }//GEN-LAST:event_btnFEditActionPerformed
+
+    private void btnFRemoveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFRemoveActionPerformed
+        int row = tblFacility.getSelectedRow();
+        if(row<0)
+        {
+            JOptionPane.showMessageDialog(this,"You need to select a row to delete");
+        }
+        else
+        {
+            DefaultTableModel model = (DefaultTableModel) tblFacility.getModel();
+            int result = JOptionPane.showConfirmDialog(null, "Do you want to remove this Facility from File? "+
+                    "\n Doing so will also delete it's Inventory File!", "Confirmation",JOptionPane.YES_NO_OPTION);
+            if(result == JOptionPane.YES_OPTION)
+            {
+                model.removeRow(row);
+                ArrayList<String> tableData = getFacilityTableData(model);
+                facility.saveFacilityFile("facilityArea.txt", tableData);
+                JOptionPane.showMessageDialog(this, "Facility Delected Successfully from File");
+            }
+            else if(result == JOptionPane.NO_OPTION)
+            {
+                return;
+            }
+        }
+    }//GEN-LAST:event_btnFRemoveActionPerformed
+
+    private void pManageFacilityStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_pManageFacilityStateChanged
+        //initMembershipComboBox();
+        //initFacilityInventoryComboBox();
+    }//GEN-LAST:event_pManageFacilityStateChanged
     
     private ArrayList<String> getTableData(DefaultTableModel model)
     {
@@ -896,6 +1222,21 @@ public class StaffMenuGUI extends javax.swing.JFrame {
         return tableData;
     }
     
+    private ArrayList<String> getFacilityTableData(DefaultTableModel model)
+    {
+        ArrayList<String> tableData = new ArrayList<>();
+        for(int i = 0; i < model.getRowCount(); i++)
+        {
+            String name = model.getValueAt(i,0).toString();
+            String hasInv = model.getValueAt(i, 1).toString();
+            String hasClass = model.getValueAt(i,2).toString();
+            
+            String row = (name+","+hasInv+","+hasClass);
+            tableData.add(row);
+        }
+        return tableData;
+    }
+    
     private void clearFields()
     {
         txtMName.setText("");
@@ -936,6 +1277,17 @@ public class StaffMenuGUI extends javax.swing.JFrame {
             model.addRow(new Object[]{s.getName(),s.getUsername(),s.getPassword()});
         }
     }
+    
+    private void loadFacilityTable()
+    {
+        DefaultTableModel model = (DefaultTableModel) tblFacility.getModel();
+        model.setRowCount(0);
+        for(Area a : facility.getAreas())
+        {
+            model.addRow(new Object[]{a.getName(), a.hasInventory(),a.hasClasses()});
+        }
+    }
+    
     /**
      * @param args the command line arguments
      */
@@ -962,6 +1314,11 @@ public class StaffMenuGUI extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnFAdd;
+    private javax.swing.JButton btnFEdit;
+    private javax.swing.JButton btnFRemove;
+    private javax.swing.ButtonGroup btnGFacilityClasses;
+    private javax.swing.ButtonGroup btnGFacilityInventory;
     private javax.swing.JButton btnLogout;
     private javax.swing.JButton btnMAdd;
     private javax.swing.JButton btnMEdit;
@@ -971,16 +1328,24 @@ public class StaffMenuGUI extends javax.swing.JFrame {
     private javax.swing.JButton btnSAdd;
     private javax.swing.JButton btnSEdit;
     private javax.swing.JButton btnSRemove;
+    private javax.swing.JComboBox<String> cbFacilityAreaInvent;
     private javax.swing.JComboBox<String> cbMembership;
-    private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
+    private javax.swing.JPanel jPanel6;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JScrollPane jScrollPane5;
+    private javax.swing.JTable jTable1;
+    private javax.swing.JLabel lblFClasses;
+    private javax.swing.JLabel lblFInventory;
+    private javax.swing.JLabel lblFName;
     private javax.swing.JLabel lblMMembership;
     private javax.swing.JLabel lblMName;
     private javax.swing.JLabel lblMPassword;
@@ -993,13 +1358,20 @@ public class StaffMenuGUI extends javax.swing.JFrame {
     private javax.swing.JLabel lblWelcome;
     private javax.swing.JPanel pDashboard;
     private javax.swing.JPanel pManageClasses;
+    private javax.swing.JTabbedPane pManageFacility;
     private javax.swing.JPanel pManageInventory;
     private javax.swing.JPanel pManageMembers;
     private javax.swing.JPanel pManageMembership;
     private javax.swing.JPanel pManageStaff;
+    private javax.swing.JRadioButton rbtnFNoc;
+    private javax.swing.JRadioButton rbtnFYesc;
+    private javax.swing.JRadioButton rbtnNoi;
+    private javax.swing.JRadioButton rbtnYesi;
+    private javax.swing.JTable tblFacility;
     private javax.swing.JTable tblMembers;
     private javax.swing.JTable tblMemberships;
     private javax.swing.JTable tblStaff;
+    private javax.swing.JTextField txtFName;
     private javax.swing.JTextField txtMName;
     private javax.swing.JTextField txtMPassword;
     private javax.swing.JTextField txtMUsername;
