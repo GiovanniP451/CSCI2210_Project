@@ -1,4 +1,9 @@
 //author: Giovanni Pernudi && edited by Isiah John 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.util.ArrayList;
 
 public class Inventory {
@@ -7,7 +12,59 @@ public class Inventory {
     //Initializes inventory list
     public Inventory(){
     Items = new ArrayList<>();
-}
+    }
+    
+    public boolean loadFromFile(String file)
+    {
+        Items.clear();
+        File f = new File(file);
+        
+        if(!f.exists())
+        {
+            return false;
+        }
+        
+        try(BufferedReader br = new BufferedReader(new FileReader(f)))
+        {
+            String row;
+            while((row = br.readLine()) != null)
+            {
+                String[] data = row.split(",");
+                if(data.length == 4)
+                {
+                    int id = Integer.parseInt(data[0]);
+                    String name = data[1];
+                    int qty = Integer.parseInt(data[2]);
+                    double price = Double.parseDouble(data[3]);
+                    
+                    Items.add(new Item(id,name,qty,price));
+                }
+            }
+            return true;
+        }
+        catch(Exception e)
+        {
+            return false;
+        }
+    }
+    
+    public boolean saveToFile(String file, ArrayList<String> tableData)
+    {
+        try(BufferedWriter bw = new BufferedWriter(new FileWriter(file)))
+        {
+            for(String row : tableData)
+            {
+                bw.write(row);
+                bw.newLine();
+            }
+            return true;
+        }
+        catch(Exception e)
+        {
+            return false;
+        }
+    }
+    
     //add product to inventory
     public void addItem(Item item){
         Items.add(item);
