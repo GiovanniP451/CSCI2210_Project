@@ -3,11 +3,6 @@
  *
  * @author Isiah John
  */
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.util.ArrayList;
 
 public class Facility {
@@ -16,127 +11,13 @@ public class Facility {
     
     public Facility()
     {
-        this.facilityName = "Gym";
+        this.facilityName = facilityName;
         this.areas = new ArrayList<>();
     }
     
-    public boolean loadFacilityFile(String file)
+    public void addArea(String name)
     {
-        areas.clear();
-        try(BufferedReader br = new BufferedReader(new FileReader(file)))
-        {
-            String row;
-            while((row = br.readLine()) != null)
-            {
-                String[] data = row.split(",");
-                if(data.length < 3)
-                {
-                    continue;
-                }
-                String fName = data[0].trim();
-                boolean hasInv = Boolean.parseBoolean(data[1].trim());
-                boolean hasClass = Boolean.parseBoolean(data[2].trim());
-                
-                areas.add(new Area(fName,hasInv,hasClass));
-            }
-            return true;
-        }
-        catch(Exception e)
-        {
-            return false;
-        }
-    }
-    
-    public boolean saveFacilityFile(String file, ArrayList<String> tableData)
-    {
-        try(BufferedWriter bw = new BufferedWriter(new FileWriter(file)))
-        {
-            for(String row : tableData)
-            {
-                bw.write(row);
-                bw.newLine();
-            }    
-            return true;
-        }
-        catch(Exception e)
-        {
-            return false;
-        }
-    }
-    
-    public void addArea(String name, boolean hasInventory, boolean hasClasses)
-    {
-        Area a = new Area(name,hasInventory,hasClasses);
-        areas.add(a);
-        if(hasInventory)
-        {
-            try
-            {
-                File f = new File(a.getInventoryFile());
-                if(!f.exists())
-                {
-                    f.createNewFile();
-                }
-            }
-            catch(Exception e)
-            {
-                e.printStackTrace();
-            }
-        }
-    }
-    
-    public boolean updateArea(String oldName, String newName, boolean newHasInventory, boolean newHasClasses)
-    {
-        Area a = findArea(oldName);
-        if(a == null)
-        {
-            return false;
-        }
-        
-        if(!a.getName().equals(newName))
-        {
-            a.setName(newName);
-        }
-        // If inventory is True
-        if(!a.hasInventory() && newHasInventory)
-        {
-            a.setHasInventory(true);
-            a.setInventory(new Inventory());
-            a.setInventoryFile(newName + "_inventory.txt");
-            try
-            {
-                File f = new File(a.getInventoryFile());
-                if(!f.exists())
-                {
-                    f.createNewFile();
-                }
-            }
-            catch(Exception e)
-            {
-                e.printStackTrace();
-            }
-        }
-        
-        // If inventory is false
-        else if(a.hasInventory() && !newHasInventory)
-        {
-            a.setHasInventory(false);
-            a.setInventory(null);
-            a.setInventoryFile(null);
-        }
-        
-        if(!a.hasClasses() && newHasClasses)
-        {
-            a.setClasses(new ArrayList<>());
-            a.setHasClasses(true);
-        }
-        else if(a.hasClasses() && !newHasClasses)
-        {
-            a.setClasses(null);
-            a.setHasClasses(false);
-        }
-        
-        return true;
+        areas.add(new Area(name));
     }
     
     public boolean removeArea(String name)
@@ -144,14 +25,6 @@ public class Facility {
         Area a = findArea(name);
         if(a != null)
         {
-            if(a.hasInventory() && a.getInventoryFile() != null)
-            {
-                File f = new File(a.getInventoryFile());
-                if(f.exists())
-                {
-                    f.delete();
-                }
-            }
             areas.remove(a);
             return true;
         }
@@ -169,7 +42,7 @@ public class Facility {
         }
         return null;
     }
- 
+    
     public String getFacilityName()
     {
         return facilityName;
