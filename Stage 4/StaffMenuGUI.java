@@ -10,13 +10,13 @@ import javax.swing.table.DefaultTableModel;
 public class StaffMenuGUI extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(StaffMenuGUI.class.getName());
-    //private Login loginObject;
     private Staff staff;
     private StaffManager staffManager;
     private MemberManager memberManager;
     private MembershipManager membershipManager;
     private CreditCardManager cardManager;
     private Facility facility;
+    private Inventory inventory;
     
 
     /**
@@ -29,7 +29,6 @@ public class StaffMenuGUI extends javax.swing.JFrame {
     public StaffMenuGUI(Staff st, MemberManager mm, MembershipManager ms, StaffManager sm, CreditCardManager ccManager, Facility facility)
     {
         this();
-        //this.loginObject = login;
         this.staff = st;
         this.staffManager = sm;
         this.memberManager = mm;
@@ -40,6 +39,7 @@ public class StaffMenuGUI extends javax.swing.JFrame {
         lblWelcome.setText("Welcome " + staff.getName() + " to the Management System");
         initMembershipComboBox();
         initFacilityInventoryComboBox();
+        initClassComboBox();
     }
     
     public void initMembershipComboBox()
@@ -52,9 +52,20 @@ public class StaffMenuGUI extends javax.swing.JFrame {
         }
     }
     
+    public void initClassComboBox()
+    {
+        cbClassFacility.addItem("None");
+        for(Area a : facility.getAreas())
+        {
+            if(a.hasClasses())
+            {
+                cbClassFacility.addItem(a.getName());
+            }
+        }
+    }
+    
     public void initFacilityInventoryComboBox()
     {
-        //cbFacilityAreaInvent.removeAllItems();
         cbFacilityAreaInvent.addItem("None");
         for(Area a : facility.getAreas())
         {
@@ -76,7 +87,7 @@ public class StaffMenuGUI extends javax.swing.JFrame {
 
         btnGFacilityInventory = new javax.swing.ButtonGroup();
         btnGFacilityClasses = new javax.swing.ButtonGroup();
-        pManageFacility = new javax.swing.JTabbedPane();
+        jTabbedPanel = new javax.swing.JTabbedPane();
         pDashboard = new javax.swing.JPanel();
         lblWelcome = new javax.swing.JLabel();
         btnLogout = new javax.swing.JButton();
@@ -106,6 +117,22 @@ public class StaffMenuGUI extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         tblMemberships = new javax.swing.JTable();
         pManageClasses = new javax.swing.JPanel();
+        jScrollPane6 = new javax.swing.JScrollPane();
+        tblClass = new javax.swing.JTable();
+        panelClassSession = new javax.swing.JPanel();
+        jLabel2 = new javax.swing.JLabel();
+        txtClassName = new javax.swing.JTextField();
+        jLabel3 = new javax.swing.JLabel();
+        cbStartTime = new javax.swing.JComboBox<>();
+        jLabel4 = new javax.swing.JLabel();
+        cbEndTime = new javax.swing.JComboBox<>();
+        jLabel5 = new javax.swing.JLabel();
+        spinMaxCap = new javax.swing.JSpinner();
+        cbClassFacility = new javax.swing.JComboBox<>();
+        jLabel6 = new javax.swing.JLabel();
+        btnClassAdd = new javax.swing.JButton();
+        btnClassRemove = new javax.swing.JButton();
+        btnClassEdit = new javax.swing.JButton();
         pManageStaff = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
         lblSName = new javax.swing.JLabel();
@@ -123,9 +150,22 @@ public class StaffMenuGUI extends javax.swing.JFrame {
         jPanel4 = new javax.swing.JPanel();
         cbFacilityAreaInvent = new javax.swing.JComboBox<>();
         jLabel1 = new javax.swing.JLabel();
+        btnLoadInventory = new javax.swing.JButton();
         jScrollPane4 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tblAreaInventory = new javax.swing.JTable();
         jPanel5 = new javax.swing.JPanel();
+        lblItemName = new javax.swing.JLabel();
+        txtItemName = new javax.swing.JTextField();
+        lblItemId = new javax.swing.JLabel();
+        txtItemId = new javax.swing.JTextField();
+        lblItemQuantity = new javax.swing.JLabel();
+        spinItemQuantity = new javax.swing.JSpinner();
+        lblItemPrice = new javax.swing.JLabel();
+        txtItemCost = new javax.swing.JTextField();
+        btnAddItem = new javax.swing.JButton();
+        btnEditItem = new javax.swing.JButton();
+        btnRemoveItem = new javax.swing.JButton();
+        pManageFacility = new javax.swing.JPanel();
         jPanel6 = new javax.swing.JPanel();
         lblFName = new javax.swing.JLabel();
         txtFName = new javax.swing.JTextField();
@@ -148,11 +188,10 @@ public class StaffMenuGUI extends javax.swing.JFrame {
                 formWindowOpened(evt);
             }
         });
-        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        pManageFacility.addChangeListener(new javax.swing.event.ChangeListener() {
+        jTabbedPanel.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                pManageFacilityStateChanged(evt);
+                jTabbedPanelStateChanged(evt);
             }
         });
 
@@ -173,21 +212,23 @@ public class StaffMenuGUI extends javax.swing.JFrame {
             .addGroup(pDashboardLayout.createSequentialGroup()
                 .addGap(26, 26, 26)
                 .addGroup(pDashboardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblWelcome, javax.swing.GroupLayout.PREFERRED_SIZE, 544, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnLogout, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(60, Short.MAX_VALUE))
+                    .addComponent(lblWelcome, javax.swing.GroupLayout.DEFAULT_SIZE, 544, Short.MAX_VALUE)
+                    .addGroup(pDashboardLayout.createSequentialGroup()
+                        .addComponent(btnLogout, javax.swing.GroupLayout.DEFAULT_SIZE, 130, Short.MAX_VALUE)
+                        .addGap(414, 414, 414)))
+                .addGap(70, 70, 70))
         );
         pDashboardLayout.setVerticalGroup(
             pDashboardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pDashboardLayout.createSequentialGroup()
                 .addGap(26, 26, 26)
-                .addComponent(lblWelcome, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(lblWelcome, javax.swing.GroupLayout.DEFAULT_SIZE, 96, Short.MAX_VALUE)
                 .addGap(106, 106, 106)
-                .addComponent(btnLogout)
-                .addContainerGap(136, Short.MAX_VALUE))
+                .addComponent(btnLogout, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(146, 146, 146))
         );
 
-        pManageFacility.addTab("Dashboard", pDashboard);
+        jTabbedPanel.addTab("Dashboard", pDashboard);
 
         tblMembers.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -266,43 +307,49 @@ public class StaffMenuGUI extends javax.swing.JFrame {
                     .addComponent(cbMembership, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblMName)
-                            .addComponent(lblMUsername)
-                            .addComponent(lblMPassword)
-                            .addComponent(lblMMembership))
-                        .addGap(0, 0, Short.MAX_VALUE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(lblMName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGap(40, 40, 40))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(lblMUsername, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGap(15, 15, 15))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(lblMPassword, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGap(19, 19, 19))
+                            .addComponent(lblMMembership, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(115, 115, 115))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(btnMEdit, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnMEdit, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnMRemove, javax.swing.GroupLayout.DEFAULT_SIZE, 86, Short.MAX_VALUE))
+                        .addComponent(btnMRemove, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addComponent(btnMAdd, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(lblMName)
+                .addComponent(lblMName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtMName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtMName)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(lblMUsername)
+                .addComponent(lblMUsername, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtMUsername, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtMUsername)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(lblMPassword)
+                .addComponent(lblMPassword, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtMPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtMPassword)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(lblMMembership)
+                .addComponent(lblMMembership, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(cbMembership, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(cbMembership)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnMEdit)
-                    .addComponent(btnMRemove))
+                    .addComponent(btnMEdit, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnMRemove, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(28, 28, 28)
-                .addComponent(btnMAdd)
-                .addContainerGap(51, Short.MAX_VALUE))
+                .addComponent(btnMAdd, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(40, 40, 40))
         );
 
         javax.swing.GroupLayout pManageMembersLayout = new javax.swing.GroupLayout(pManageMembers);
@@ -311,22 +358,24 @@ public class StaffMenuGUI extends javax.swing.JFrame {
             pManageMembersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pManageMembersLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 384, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 394, Short.MAX_VALUE)
                 .addGap(18, 18, 18))
         );
         pManageMembersLayout.setVerticalGroup(
             pManageMembersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pManageMembersLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(pManageMembersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                .addGroup(pManageMembersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 394, Short.MAX_VALUE)
+                    .addGroup(pManageMembersLayout.createSequentialGroup()
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
 
-        pManageFacility.addTab("Members", pManageMembers);
+        jTabbedPanel.addTab("Members", pManageMembers);
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "Membership Info"));
         jPanel2.setPreferredSize(new java.awt.Dimension(216, 383));
@@ -359,36 +408,38 @@ public class StaffMenuGUI extends javax.swing.JFrame {
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtMemCost)
-                    .addComponent(txtMemType)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(btnMemRemove, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(txtMemCost, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txtMemType, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblMembershipType)
-                            .addComponent(lblMembershipCost))
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(btnMemAdd, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnMemRemove, javax.swing.GroupLayout.DEFAULT_SIZE, 192, Short.MAX_VALUE))
+                            .addComponent(lblMembershipType, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addComponent(lblMembershipCost, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGap(2, 2, 2)))
+                        .addGap(163, 163, 163))
+                    .addComponent(btnMemAdd, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(16, 16, 16)
-                .addComponent(lblMembershipType)
+                .addComponent(lblMembershipType, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtMemType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtMemType)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(lblMembershipCost)
+                .addComponent(lblMembershipCost, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtMemCost, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 63, Short.MAX_VALUE)
-                .addComponent(btnMemRemove)
+                .addComponent(txtMemCost)
+                .addGap(30, 30, 30)
+                .addComponent(btnMemRemove, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
-                .addComponent(btnMemAdd)
-                .addGap(106, 106, 106))
+                .addComponent(btnMemAdd, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(31, 31, 31))
         );
 
         tblMemberships.setModel(new javax.swing.table.DefaultTableModel(
@@ -415,34 +466,178 @@ public class StaffMenuGUI extends javax.swing.JFrame {
             pManageMembershipLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pManageMembershipLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 393, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(9, Short.MAX_VALUE))
+                .addComponent(jScrollPane2)
+                .addGap(19, 19, 19))
         );
         pManageMembershipLayout.setVerticalGroup(
             pManageMembershipLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pManageMembershipLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(pManageMembershipLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 389, Short.MAX_VALUE)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 400, Short.MAX_VALUE)
+                    .addGroup(pManageMembershipLayout.createSequentialGroup()
+                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 281, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))))
         );
 
-        pManageFacility.addTab("Membership", pManageMembership);
+        jTabbedPanel.addTab("Membership", pManageMembership);
+
+        tblClass.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Name", "Start Time", "End Time", "Max Cap.", "Location"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tblClass.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblClassMouseClicked(evt);
+            }
+        });
+        jScrollPane6.setViewportView(tblClass);
+
+        panelClassSession.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "Class Session"));
+
+        jLabel2.setText("Class Name");
+
+        jLabel3.setText("Start Time (XX:XX)");
+
+        cbStartTime.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "08:00 AM", "08:30 AM", "09:00 AM", "09:30 AM", "10:00 AM", "10:30 AM", "11:00 AM", "11:30 AM", "12:00 PM", "12:30 PM", "01:00 PM", "01:30 PM", "02:00 PM", "02:30 PM", "03:00 PM", "03:30 PM", "04:00 PM", "04:30 PM", "05:00 PM", "05:30 PM", "06:00 PM", "06:30 PM", "07:00 PM", "07:30 PM", "08:00 PM" }));
+
+        jLabel4.setText("End Time (XX:XX)");
+
+        cbEndTime.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "08:00 AM", "08:30 AM", "09:00 AM", "09:30 AM", "10:00 AM", "10:30 AM", "11:00 AM", "11:30 AM", "12:00 PM", "12:30 PM", "01:00 PM", "01:30 PM", "02:00 PM", "02:30 PM", "03:00 PM", "03:30 PM", "04:00 PM", "04:30 PM", "05:00 PM", "05:30 PM", "06:00 PM", "06:30 PM", "07:00 PM", "07:30 PM", "08:00 PM" }));
+
+        jLabel5.setText("Max Capacity");
+
+        jLabel6.setText("Location");
+
+        btnClassAdd.setText("Add");
+        btnClassAdd.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnClassAddActionPerformed(evt);
+            }
+        });
+
+        btnClassRemove.setText("Remove");
+        btnClassRemove.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnClassRemoveActionPerformed(evt);
+            }
+        });
+
+        btnClassEdit.setText("Update");
+        btnClassEdit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnClassEditActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout panelClassSessionLayout = new javax.swing.GroupLayout(panelClassSession);
+        panelClassSession.setLayout(panelClassSessionLayout);
+        panelClassSessionLayout.setHorizontalGroup(
+            panelClassSessionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelClassSessionLayout.createSequentialGroup()
+                .addGroup(panelClassSessionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelClassSessionLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(panelClassSessionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(cbEndTime, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnClassAdd, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(txtClassName, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(cbClassFacility, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(panelClassSessionLayout.createSequentialGroup()
+                                .addGroup(panelClassSessionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(panelClassSessionLayout.createSequentialGroup()
+                                        .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addGap(37, 37, 37))
+                                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addGroup(panelClassSessionLayout.createSequentialGroup()
+                                        .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addGap(5, 5, 5))
+                                    .addGroup(panelClassSessionLayout.createSequentialGroup()
+                                        .addComponent(btnClassEdit, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(0, 0, Short.MAX_VALUE)))
+                                .addGap(22, 22, 22)
+                                .addComponent(btnClassRemove, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, panelClassSessionLayout.createSequentialGroup()
+                                .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGap(174, 174, 174))
+                            .addComponent(cbStartTime, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(panelClassSessionLayout.createSequentialGroup()
+                        .addGap(55, 55, 55)
+                        .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(spinMaxCap)))
+                .addContainerGap())
+        );
+        panelClassSessionLayout.setVerticalGroup(
+            panelClassSessionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelClassSessionLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtClassName)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(cbStartTime)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(cbEndTime)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(cbClassFacility)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(panelClassSessionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(spinMaxCap))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(panelClassSessionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnClassEdit, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnClassRemove, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnClassAdd, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
 
         javax.swing.GroupLayout pManageClassesLayout = new javax.swing.GroupLayout(pManageClasses);
         pManageClasses.setLayout(pManageClassesLayout);
         pManageClassesLayout.setHorizontalGroup(
             pManageClassesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 630, Short.MAX_VALUE)
+            .addGroup(pManageClassesLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(panelClassSession, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane6, javax.swing.GroupLayout.DEFAULT_SIZE, 361, Short.MAX_VALUE)
+                .addGap(23, 23, 23))
         );
         pManageClassesLayout.setVerticalGroup(
             pManageClassesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 395, Short.MAX_VALUE)
+            .addGroup(pManageClassesLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane6, javax.swing.GroupLayout.DEFAULT_SIZE, 375, Short.MAX_VALUE)
+                .addGap(25, 25, 25))
+            .addGroup(pManageClassesLayout.createSequentialGroup()
+                .addGap(35, 35, 35)
+                .addComponent(panelClassSession, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        pManageFacility.addTab("Classes", pManageClasses);
+        jTabbedPanel.addTab("Classes", pManageClasses);
 
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "Staff Info"));
 
@@ -495,38 +690,42 @@ public class StaffMenuGUI extends javax.swing.JFrame {
                     .addComponent(txtSPassword)
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblSName)
-                            .addComponent(lblSUsername)
-                            .addComponent(lblSPassword))
-                        .addGap(0, 0, Short.MAX_VALUE))
+                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                .addComponent(lblSName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGap(25, 25, 25))
+                            .addComponent(lblSUsername, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                .addComponent(lblSPassword, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGap(4, 4, 4)))
+                        .addGap(131, 131, 131))
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(btnSEdit, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnSEdit, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGap(18, 18, 18)
-                        .addComponent(btnSRemove, javax.swing.GroupLayout.DEFAULT_SIZE, 90, Short.MAX_VALUE)))
+                        .addComponent(btnSRemove, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(16, 16, 16)
-                .addComponent(lblSName)
+                .addComponent(lblSName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtSName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtSName)
                 .addGap(18, 18, 18)
-                .addComponent(lblSUsername)
+                .addComponent(lblSUsername, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(txtSUsername, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtSUsername)
                 .addGap(18, 18, 18)
-                .addComponent(lblSPassword)
+                .addComponent(lblSPassword, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(txtSPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtSPassword)
                 .addGap(26, 26, 26)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnSEdit)
-                    .addComponent(btnSRemove))
+                    .addComponent(btnSEdit, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnSRemove, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
-                .addComponent(btnSAdd)
-                .addContainerGap(46, Short.MAX_VALUE))
+                .addComponent(btnSAdd, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(28, 28, 28))
         );
 
         tblStaff.setModel(new javax.swing.table.DefaultTableModel(
@@ -553,26 +752,36 @@ public class StaffMenuGUI extends javax.swing.JFrame {
             pManageStaffLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pManageStaffLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 383, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(18, Short.MAX_VALUE))
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 383, Short.MAX_VALUE)
+                .addGap(28, 28, 28))
         );
         pManageStaffLayout.setVerticalGroup(
             pManageStaffLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pManageStaffLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(pManageStaffLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 392, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(pManageStaffLayout.createSequentialGroup()
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 393, Short.MAX_VALUE)
+                        .addGap(7, 7, 7))
+                    .addGroup(pManageStaffLayout.createSequentialGroup()
+                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
 
-        pManageFacility.addTab("Staff", pManageStaff);
+        jTabbedPanel.addTab("Staff", pManageStaff);
 
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "Inventory"));
 
         jLabel1.setText("Facility Areas w/ Inventory");
+
+        btnLoadInventory.setText("Load Inventory");
+        btnLoadInventory.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLoadInventoryActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -580,22 +789,25 @@ public class StaffMenuGUI extends javax.swing.JFrame {
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(cbFacilityAreaInvent, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(54, Short.MAX_VALUE))
+                    .addComponent(cbFacilityAreaInvent, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnLoadInventory, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(21, 21, 21))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel1)
+                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(8, 8, 8)
-                .addComponent(cbFacilityAreaInvent, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(313, Short.MAX_VALUE))
+                .addComponent(cbFacilityAreaInvent)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnLoadInventory, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tblAreaInventory.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -611,7 +823,110 @@ public class StaffMenuGUI extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane4.setViewportView(jTable1);
+        tblAreaInventory.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblAreaInventoryMouseClicked(evt);
+            }
+        });
+        jScrollPane4.setViewportView(tblAreaInventory);
+
+        jPanel5.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "Add Item to Inventory"));
+
+        lblItemName.setText("Item Name");
+
+        lblItemId.setText("Item Id");
+
+        lblItemQuantity.setText("Item Quantity");
+
+        lblItemPrice.setText("Item Cost");
+
+        btnAddItem.setText("Add");
+        btnAddItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddItemActionPerformed(evt);
+            }
+        });
+
+        btnEditItem.setText("Update");
+        btnEditItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditItemActionPerformed(evt);
+            }
+        });
+
+        btnRemoveItem.setText("Remove");
+        btnRemoveItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRemoveItemActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
+        jPanel5.setLayout(jPanel5Layout);
+        jPanel5Layout.setHorizontalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel5Layout.createSequentialGroup()
+                                .addComponent(txtItemId)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(txtItemCost))
+                            .addGroup(jPanel5Layout.createSequentialGroup()
+                                .addComponent(lblItemQuantity, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGap(81, 81, 81))
+                            .addGroup(jPanel5Layout.createSequentialGroup()
+                                .addComponent(spinItemQuantity)
+                                .addGap(82, 82, 82)))
+                        .addGap(15, 15, 15))
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addComponent(lblItemId, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(55, 55, 55)
+                        .addComponent(lblItemPrice, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(25, 25, 25))
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addComponent(txtItemName)
+                        .addContainerGap())
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnAddItem, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(jPanel5Layout.createSequentialGroup()
+                                .addComponent(lblItemName, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                                .addGap(104, 104, 104))
+                            .addGroup(jPanel5Layout.createSequentialGroup()
+                                .addComponent(btnEditItem, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnRemoveItem, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addContainerGap())))
+        );
+        jPanel5Layout.setVerticalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblItemId, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lblItemPrice, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtItemId)
+                    .addComponent(txtItemCost))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lblItemName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtItemName)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lblItemQuantity, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(spinItemQuantity)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnRemoveItem, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnEditItem, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnAddItem, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(20, 20, 20))
+        );
 
         javax.swing.GroupLayout pManageInventoryLayout = new javax.swing.GroupLayout(pManageInventory);
         pManageInventory.setLayout(pManageInventoryLayout);
@@ -619,23 +934,31 @@ public class StaffMenuGUI extends javax.swing.JFrame {
             pManageInventoryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pManageInventoryLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(pManageInventoryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pManageInventoryLayout.createSequentialGroup()
+                        .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(10, 10, 10))
+                    .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 390, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(12, Short.MAX_VALUE))
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 405, Short.MAX_VALUE)
+                .addGap(30, 30, 30))
         );
         pManageInventoryLayout.setVerticalGroup(
             pManageInventoryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pManageInventoryLayout.createSequentialGroup()
                 .addGroup(pManageInventoryLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(pManageInventoryLayout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)))
+                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                    .addGroup(pManageInventoryLayout.createSequentialGroup()
+                        .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(24, 24, 24)))
                 .addContainerGap())
         );
 
-        pManageFacility.addTab("Inventory", pManageInventory);
+        jTabbedPanel.addTab("Inventory", pManageInventory);
 
         jPanel6.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "Facility Areas"));
 
@@ -699,48 +1022,54 @@ public class StaffMenuGUI extends javax.swing.JFrame {
                     .addComponent(btnFAdd, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(txtFName)
                     .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addComponent(btnFEdit, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnFEdit, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGap(18, 18, 18)
-                        .addComponent(btnFRemove, javax.swing.GroupLayout.DEFAULT_SIZE, 86, Short.MAX_VALUE))
-                    .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(lblFName)
-                        .addGroup(jPanel6Layout.createSequentialGroup()
-                            .addComponent(rbtnYesi)
-                            .addGap(18, 18, 18)
-                            .addComponent(rbtnNoi))
-                        .addComponent(lblFInventory, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(lblFClasses, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(btnFRemove, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addComponent(rbtnFYesc)
+                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel6Layout.createSequentialGroup()
+                                .addComponent(lblFName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGap(138, 138, 138))
+                            .addGroup(jPanel6Layout.createSequentialGroup()
+                                .addComponent(rbtnYesi, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGap(18, 18, 18)
+                                .addComponent(rbtnNoi, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGap(71, 71, 71))
+                            .addComponent(lblFInventory, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lblFClasses, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(12, 12, 12))
+                    .addGroup(jPanel6Layout.createSequentialGroup()
+                        .addComponent(rbtnFYesc, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGap(18, 18, 18)
-                        .addComponent(rbtnFNoc)))
+                        .addComponent(rbtnFNoc, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(83, 83, 83)))
                 .addContainerGap())
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addGap(8, 8, 8)
-                .addComponent(lblFName)
+                .addComponent(lblFName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtFName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtFName)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(lblFInventory)
+                .addComponent(lblFInventory, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(rbtnYesi)
-                    .addComponent(rbtnNoi))
+                    .addComponent(rbtnYesi, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(rbtnNoi, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(lblFClasses)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 16, Short.MAX_VALUE)
+                .addComponent(lblFClasses, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(16, 16, 16)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(rbtnFYesc)
-                    .addComponent(rbtnFNoc))
+                    .addComponent(rbtnFYesc, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(rbtnFNoc, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnFEdit)
-                    .addComponent(btnFRemove))
+                    .addComponent(btnFEdit, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnFRemove, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
-                .addComponent(btnFAdd)
+                .addComponent(btnFAdd, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(14, 14, 14))
         );
 
@@ -767,32 +1096,41 @@ public class StaffMenuGUI extends javax.swing.JFrame {
         });
         jScrollPane5.setViewportView(tblFacility);
 
-        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
-        jPanel5.setLayout(jPanel5Layout);
-        jPanel5Layout.setHorizontalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel5Layout.createSequentialGroup()
+        javax.swing.GroupLayout pManageFacilityLayout = new javax.swing.GroupLayout(pManageFacility);
+        pManageFacility.setLayout(pManageFacilityLayout);
+        pManageFacilityLayout.setHorizontalGroup(
+            pManageFacilityLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pManageFacilityLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(12, 12, 12)
-                .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 371, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 30, Short.MAX_VALUE))
+                .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 371, Short.MAX_VALUE)
+                .addGap(40, 40, 40))
         );
-        jPanel5Layout.setVerticalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 384, javax.swing.GroupLayout.PREFERRED_SIZE)
+        pManageFacilityLayout.setVerticalGroup(
+            pManageFacilityLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pManageFacilityLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                 .addGap(16, 16, 16))
-            .addGroup(jPanel5Layout.createSequentialGroup()
+            .addGroup(pManageFacilityLayout.createSequentialGroup()
                 .addGap(40, 40, 40)
-                .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(50, 50, 50))
         );
 
-        pManageFacility.addTab("Facility", jPanel5);
+        jTabbedPanel.addTab("Facility", pManageFacility);
 
-        getContentPane().add(pManageFacility, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 630, 430));
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jTabbedPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 640, Short.MAX_VALUE)
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jTabbedPanel)
+        );
 
         setSize(new java.awt.Dimension(654, 448));
         setLocationRelativeTo(null);
@@ -810,6 +1148,7 @@ public class StaffMenuGUI extends javax.swing.JFrame {
         loadMembershipTable();
         loadStaffTable();
         loadFacilityTable();
+        loadClassTable();
     }//GEN-LAST:event_formWindowOpened
 
     private void btnMAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMAddActionPerformed
@@ -984,6 +1323,11 @@ public class StaffMenuGUI extends javax.swing.JFrame {
     private void btnMemAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMemAddActionPerformed
         try
         {
+            String type = txtMemType.getText().trim();
+            String cost = txtMemCost.getText().trim();
+            
+            membershipManager.createMembership(new Membership(type,Double.parseDouble(cost)));
+            
             String[] tableRow = {txtMemType.getText(),txtMemCost.getText()};
             DefaultTableModel model = (DefaultTableModel) tblMemberships.getModel();
             model.addRow(tableRow);
@@ -993,6 +1337,14 @@ public class StaffMenuGUI extends javax.swing.JFrame {
             if(membershipManager.saveMembershipFile("memberships.txt", tableData))
             {
                 JOptionPane.showMessageDialog(this,"Saved to Membership File");
+                
+            }
+            
+            cbMembership.removeAllItems();
+            cbMembership.addItem("None");
+            for(Membership m : membershipManager.getMemberships())
+            {
+                cbMembership.addItem(m.getType());
             }
         }
         catch(Exception e)
@@ -1093,6 +1445,23 @@ public class StaffMenuGUI extends javax.swing.JFrame {
             {
                 JOptionPane.showMessageDialog(this, "Saved to Facility File");
             }
+            
+            cbFacilityAreaInvent.removeAllItems();
+            cbFacilityAreaInvent.addItem("None");
+            for(Area a : facility.getAreas())
+            {
+                cbFacilityAreaInvent.addItem(a.getName());
+            }
+            
+            cbClassFacility.removeAllItems();
+            cbClassFacility.addItem("None");
+            for(Area a : facility.getAreas())
+            {
+                if(a.hasClasses())
+                {
+                    cbClassFacility.addItem(a.getName());
+                }
+            }
         }
         catch(Exception e)
         {
@@ -1132,7 +1501,6 @@ public class StaffMenuGUI extends javax.swing.JFrame {
             return;
         }
         
-        
         String oldName = tblFacility.getValueAt(row, 0).toString();
         String newName = txtFName.getText().trim();
         boolean newChoiceInv = rbtnYesi.isSelected();
@@ -1145,6 +1513,23 @@ public class StaffMenuGUI extends javax.swing.JFrame {
         ArrayList<String> tableData = getFacilityTableData(model);
         facility.saveFacilityFile("facilityArea.txt", tableData);
         JOptionPane.showMessageDialog(this,"Facility Area updated Successfully");
+        
+        cbFacilityAreaInvent.removeAllItems();
+        cbFacilityAreaInvent.addItem("None");
+        for(Area a : facility.getAreas())
+        {
+            cbFacilityAreaInvent.addItem(a.getName());
+        }
+        
+        cbClassFacility.removeAllItems();
+        cbClassFacility.addItem("None");
+        for(Area a : facility.getAreas())
+        {
+            if(a.hasClasses())
+            {
+                cbClassFacility.addItem(a.getName());
+            }
+        }
         
     }//GEN-LAST:event_btnFEditActionPerformed
 
@@ -1161,10 +1546,21 @@ public class StaffMenuGUI extends javax.swing.JFrame {
                     "\n Doing so will also delete it's Inventory File!", "Confirmation",JOptionPane.YES_NO_OPTION);
             if(result == JOptionPane.YES_OPTION)
             {
+                facility.removeArea(model.getValueAt(row, 0).toString());
                 model.removeRow(row);
                 ArrayList<String> tableData = getFacilityTableData(model);
                 facility.saveFacilityFile("facilityArea.txt", tableData);
                 JOptionPane.showMessageDialog(this, "Facility Delected Successfully from File");
+                
+                cbFacilityAreaInvent.removeAllItems();
+                cbFacilityAreaInvent.addItem("None");
+                for(Area a : facility.getAreas())
+                {
+                    if(a.hasInventory())
+                    {
+                        cbFacilityAreaInvent.addItem(a.getName());
+                    }
+                }  
             }
             else if(result == JOptionPane.NO_OPTION)
             {
@@ -1173,10 +1569,333 @@ public class StaffMenuGUI extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnFRemoveActionPerformed
 
-    private void pManageFacilityStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_pManageFacilityStateChanged
-        //initMembershipComboBox();
-        //initFacilityInventoryComboBox();
-    }//GEN-LAST:event_pManageFacilityStateChanged
+    private void jTabbedPanelStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jTabbedPanelStateChanged
+        
+    }//GEN-LAST:event_jTabbedPanelStateChanged
+
+    private void btnLoadInventoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoadInventoryActionPerformed
+        loadInventoryTable();
+    }//GEN-LAST:event_btnLoadInventoryActionPerformed
+
+    private void btnAddItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddItemActionPerformed
+        try
+        {
+            int id = Integer.parseInt(txtItemId.getText());
+            String name = txtItemName.getText().trim();
+            int quantity = (Integer)spinItemQuantity.getValue();
+            double cost = Double.parseDouble(txtItemCost.getText());
+            
+            String areaName = cbFacilityAreaInvent.getSelectedItem().toString();
+            Area a = facility.findArea(areaName);
+            Inventory inv = a.getInventory();
+            
+            Item item = new Item(id,name,quantity,cost);
+            inv.addItem(item);
+            
+            DefaultTableModel model = (DefaultTableModel)tblAreaInventory.getModel();
+            
+            ArrayList<String> tableData = getAreaInventoryTableData(model);
+            inv.saveToFile(a.getInventoryFile(), tableData);
+            
+            loadInventoryTable();
+        }
+        catch(Exception e)
+        {
+            JOptionPane.showMessageDialog(this,"Failed to Add Item to Inventory");
+        }
+    }//GEN-LAST:event_btnAddItemActionPerformed
+
+    private void btnRemoveItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoveItemActionPerformed
+        int row = tblAreaInventory.getSelectedRow();
+        if(row<0)
+        {
+            JOptionPane.showMessageDialog(this,"You need to Select a row to delete");
+        }
+        else
+        {
+            int result = JOptionPane.showConfirmDialog(null, "Do you want to remove this Item from File?", "Confirmation", JOptionPane.YES_NO_OPTION);
+            if(result == JOptionPane.YES_OPTION)
+            {
+                String aName = cbFacilityAreaInvent.getSelectedItem().toString();
+                Area area = facility.findArea(aName);
+                Inventory inv = area.getInventory();
+                
+                DefaultTableModel model = (DefaultTableModel) tblAreaInventory.getModel();
+                
+                int id = (Integer)model.getValueAt(row,0);
+                Item item = inv.findItemByID(id);
+                if(item != null)
+                {
+                    inv.removeItem(item);
+                }
+                model.removeRow(row);
+                ArrayList<String> tableData = getAreaInventoryTableData(model);
+                inv.saveToFile(area.getInventoryFile(), tableData);
+                loadInventoryTable(); 
+                JOptionPane.showMessageDialog(this,"Item removed Successfully from " + area.getName() + " inventory file");
+            }
+        }
+    }//GEN-LAST:event_btnRemoveItemActionPerformed
+
+    private void btnEditItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditItemActionPerformed
+        int row = tblAreaInventory.getSelectedRow();
+        if(row<0)
+        {
+            JOptionPane.showMessageDialog(this,"You need to Select a Row to Edit");
+            return;
+        }
+        DefaultTableModel model = (DefaultTableModel) tblAreaInventory.getModel();
+        int id = Integer.parseInt(txtItemId.getText().trim());
+        String name = txtItemName.getText().trim();
+        int qty = Integer.parseInt(spinItemQuantity.getValue().toString());
+        double price = Double.parseDouble(txtItemCost.getText().trim());
+        
+        String areaName = cbFacilityAreaInvent.getSelectedItem().toString();
+        Area area = facility.findArea(areaName);
+        int originalId = (Integer)model.getValueAt(row,0);
+        Inventory inv = area.getInventory();
+        
+        Item item = inv.findItemByID(originalId);
+        if(item != null)
+        {
+            item.setName(name);
+            item.setQuantity(qty);
+            item.setPrice(price);
+        }
+        
+        model.setValueAt(id, row, 0);
+        model.setValueAt(name, row, 1);
+        model.setValueAt(qty, row, 2);
+        model.setValueAt(price,row,3);
+        
+        ArrayList<String> tableData = getAreaInventoryTableData(model);
+        inv.saveToFile(area.getInventoryFile(), tableData);
+    }//GEN-LAST:event_btnEditItemActionPerformed
+
+    private void tblAreaInventoryMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblAreaInventoryMouseClicked
+        int row = tblAreaInventory.getSelectedRow();
+        if(row<0)
+        {
+            return;
+        }
+        String id = tblAreaInventory.getValueAt(row, 0).toString();
+        String name = tblAreaInventory.getValueAt(row, 1).toString();
+        String qty = tblAreaInventory.getValueAt(row,2).toString();
+        String price = tblAreaInventory.getValueAt(row,3).toString();
+        
+        String areaName = cbFacilityAreaInvent.getSelectedItem().toString();
+        Area a = facility.findArea(areaName);
+        Inventory inv = a.getInventory();
+        
+        if(inv == null)
+        {
+            JOptionPane.showMessageDialog(this, "Area: " + areaName + " does not have an inventory");
+            return;
+        }
+        
+        Item selectedItem = inv.findItemByID(Integer.parseInt(id));
+        
+        if(selectedItem == null)
+        {
+            return;
+        }
+        
+        txtItemId.setText(id);
+        txtItemName.setText(name);
+        spinItemQuantity.setValue(Integer.parseInt(qty));
+        txtItemCost.setText(price);
+    }//GEN-LAST:event_tblAreaInventoryMouseClicked
+
+    private void btnClassAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClassAddActionPerformed
+
+        try
+        {
+            String className = txtClassName.getText().trim();
+            String startTime = cbStartTime.getSelectedItem().toString();
+            String endTime = cbEndTime.getSelectedItem().toString();
+            String areaLocation = cbClassFacility.getSelectedItem().toString();
+            int maxCap = (Integer)spinMaxCap.getValue();
+            
+            Area a = facility.findArea(areaLocation);
+            if(a == null || !a.hasClasses())
+            {
+                JOptionPane.showMessageDialog(this, "This area cannot host classes.");
+                return;
+            }
+            
+            Class c = new Class(className,startTime,endTime,maxCap);
+            a.getClasses().add(c);
+            
+            DefaultTableModel model = (DefaultTableModel) tblClass.getModel();
+            model.addRow(new Object[]{className,startTime,endTime,maxCap,areaLocation});
+            
+            ArrayList<String> tableData = getClassTableData(model);
+            
+            if(facility.saveClasses("classes.txt", tableData))
+            {
+                JOptionPane.showMessageDialog(this,"Saved To Class File");
+            }
+            
+            cbClassFacility.removeAllItems();
+            cbClassFacility.addItem("None");
+            for(Area area : facility.getAreas())
+            {
+                if(area.hasClasses())
+                {
+                    cbClassFacility.addItem(area.getName());
+                }
+            }
+        }
+        catch(Exception e)
+        {
+            JOptionPane.showMessageDialog(this, "Failed to add Class to File");
+        }
+    }//GEN-LAST:event_btnClassAddActionPerformed
+
+    private void btnClassEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClassEditActionPerformed
+        try
+        {
+            int row = tblClass.getSelectedRow();
+            if(row<0)
+            {
+                JOptionPane.showMessageDialog(this, "You need to select a row to edit");
+                return;
+            }
+            DefaultTableModel model = (DefaultTableModel) tblClass.getModel();
+            
+            String newClassName = txtClassName.getText();
+            String newStartTime = cbStartTime.getSelectedItem().toString();
+            String newEndTime = cbEndTime.getSelectedItem().toString();
+            int newMaxCap = (Integer)spinMaxCap.getValue();
+            String newAreaName = cbClassFacility.getSelectedItem().toString();
+        
+            String oldAreaName = tblClass.getValueAt(row, 4).toString();
+            String oldClassName = tblClass.getValueAt(row,0).toString();
+            
+            Area oldArea = facility.findArea(oldAreaName);
+            if(oldArea == null || !oldArea.hasClasses())
+            {
+                JOptionPane.showMessageDialog(this,"Invalid Area");
+                return;
+            }
+        
+            Class editing = null;
+            for(Class c : oldArea.getClasses())
+            {
+                if(c.getClassName().equalsIgnoreCase(oldClassName))
+                {
+                    editing = c;
+                    break;
+                }
+            }
+        
+            if(editing == null)
+            {
+                JOptionPane.showMessageDialog(this,"Class was not found");
+                return;
+            }
+            editing.changeClassTime(newStartTime,newEndTime);
+            editing.setMaxCapacity(newMaxCap);
+            editing.setClassName(newClassName);
+            
+            if(!oldAreaName.equals(newAreaName))
+            {
+                Area newArea = facility.findArea(newAreaName);
+                if(newArea != null && newArea.hasClasses())
+                {
+                    oldArea.getClasses().remove(editing);
+                    newArea.getClasses().add(editing);
+                }
+            }
+        
+            ArrayList<String> tableData = getClassTableData(model);
+            if(facility.saveClasses("classes.txt", tableData))
+            {
+                JOptionPane.showMessageDialog(this, "Class saved successfully");
+            }
+        
+            loadClassTable();
+        }
+        catch(Exception e)
+        {
+            JOptionPane.showMessageDialog(this,"Failed to Edit Class");
+        }
+    }//GEN-LAST:event_btnClassEditActionPerformed
+
+    private void tblClassMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblClassMouseClicked
+        int row = tblClass.getSelectedRow();
+        if(row<0)
+        {
+            return;
+        }
+        
+        String className = tblClass.getValueAt(row,0).toString();
+        String startTime = tblClass.getValueAt(row,1).toString();
+        String endTime = tblClass.getValueAt(row,2).toString();
+        int maxCap = (Integer)tblClass.getValueAt(row,3);
+        String areaLocation = tblClass.getValueAt(row,4).toString();
+        
+        Area a = facility.findArea(areaLocation);
+        
+        txtClassName.setText(className);
+        cbStartTime.setSelectedItem(startTime);
+        cbEndTime.setSelectedItem(endTime);
+        spinMaxCap.setValue(maxCap);
+        cbClassFacility.setSelectedItem(areaLocation);
+    }//GEN-LAST:event_tblClassMouseClicked
+
+    private void btnClassRemoveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClassRemoveActionPerformed
+
+        int row = tblClass.getSelectedRow();
+        if(row<0)
+        {
+            JOptionPane.showMessageDialog(this, "You need to Select a row to remove");
+        }
+        else
+        {
+            int result = JOptionPane.showConfirmDialog(null, "Do you want to remove this Class from File?", "Confirmation", JOptionPane.YES_NO_OPTION);
+            if(result == JOptionPane.YES_OPTION)
+            {
+                String aName = tblClass.getValueAt(row,4).toString(); //get location
+                String className = tblClass.getValueAt(row,0).toString();
+                
+                Area area = facility.findArea(aName);
+                if(area == null || !area.hasClasses())
+                {
+                    JOptionPane.showMessageDialog(this,"Invalid Area");
+                }
+                
+                Class target = null;
+                for(Class c : area.getClasses())
+                {
+                    if(c.getClassName().equalsIgnoreCase(className))
+                    {
+                        target = c;
+                        break;
+                    }
+                }
+                
+                if(target == null)
+                {
+                    JOptionPane.showMessageDialog(this,"Class not found in Area");
+                    return;
+                }
+                
+                area.getClasses().remove(target);
+                
+                DefaultTableModel model = (DefaultTableModel) tblClass.getModel();
+                model.removeRow(row);
+                
+                ArrayList<String> tableData = getClassTableData(model);
+                if(facility.saveClasses("classes.txt", tableData))
+                {
+                    JOptionPane.showMessageDialog(this,"Class removed Successfully");
+                }
+                
+                loadClassTable();
+            }    
+        }
+    }//GEN-LAST:event_btnClassRemoveActionPerformed
     
     private ArrayList<String> getTableData(DefaultTableModel model)
     {
@@ -1237,6 +1956,39 @@ public class StaffMenuGUI extends javax.swing.JFrame {
         return tableData;
     }
     
+    private ArrayList<String> getAreaInventoryTableData(DefaultTableModel model)
+    {
+        ArrayList<String> tableData = new ArrayList<>();
+        for(int i = 0; i < model.getRowCount(); i++)
+        {
+            String itemId = model.getValueAt(i, 0).toString();
+            String itemName = model.getValueAt(i, 1).toString();
+            String itemQuantity = model.getValueAt(i, 2).toString();
+            String itemCost = model.getValueAt(i, 3).toString();
+            
+            String row = (itemId + "," + itemName + "," + itemQuantity + "," + itemCost);
+            tableData.add(row);
+        }
+        return tableData;
+    }
+    
+    private ArrayList<String> getClassTableData(DefaultTableModel model)
+    {
+        ArrayList<String> tableData = new ArrayList<>();
+        for(int i = 0; i < model.getRowCount(); i++)
+        {
+            String className = model.getValueAt(i,0).toString();
+            String start = model.getValueAt(i,1).toString();
+            String end = model.getValueAt(i,2).toString();
+            String maxCap = model.getValueAt(i, 3).toString();
+            String location = model.getValueAt(i,4).toString();
+            
+            String row = className + "," + start + "," + end + "," + maxCap + "," + location;
+            tableData.add(row);
+        }
+        return tableData;
+    }
+    
     private void clearFields()
     {
         txtMName.setText("");
@@ -1288,6 +2040,41 @@ public class StaffMenuGUI extends javax.swing.JFrame {
         }
     }
     
+    private void loadInventoryTable()
+    {
+        String selectedInventory = cbFacilityAreaInvent.getSelectedItem().toString();
+        Area a = facility.findArea(selectedInventory);
+        
+        Inventory inv = a.getInventory();
+        inv.loadFromFile(a.getInventoryFile());
+        
+        DefaultTableModel model = (DefaultTableModel) tblAreaInventory.getModel();
+        model.setRowCount(0);
+        
+        for(Item i : inv.getItems())
+        {
+            model.addRow(new Object[]{i.getId(),i.getName(),i.getQuantity(),i.getPrice()});
+        }
+    }
+    
+    private void loadClassTable()
+    {
+        facility.loadClasses("classes.txt");
+        DefaultTableModel model = (DefaultTableModel) tblClass.getModel();
+        model.setRowCount(0);
+        for(Area a : facility.getAreas())
+        {
+            if(!a.hasClasses())
+            {
+                continue;
+            }
+            for(Class c : a.getClasses())
+            {
+                model.addRow(new Object[]{c.getClassName(),c.getStartTime(),c.getEndTime(),c.getMaxCapacity(),a.getName()});
+            }
+        }
+    }
+    
     /**
      * @param args the command line arguments
      */
@@ -1314,23 +2101,38 @@ public class StaffMenuGUI extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAddItem;
+    private javax.swing.JButton btnClassAdd;
+    private javax.swing.JButton btnClassEdit;
+    private javax.swing.JButton btnClassRemove;
+    private javax.swing.JButton btnEditItem;
     private javax.swing.JButton btnFAdd;
     private javax.swing.JButton btnFEdit;
     private javax.swing.JButton btnFRemove;
     private javax.swing.ButtonGroup btnGFacilityClasses;
     private javax.swing.ButtonGroup btnGFacilityInventory;
+    private javax.swing.JButton btnLoadInventory;
     private javax.swing.JButton btnLogout;
     private javax.swing.JButton btnMAdd;
     private javax.swing.JButton btnMEdit;
     private javax.swing.JButton btnMRemove;
     private javax.swing.JButton btnMemAdd;
     private javax.swing.JButton btnMemRemove;
+    private javax.swing.JButton btnRemoveItem;
     private javax.swing.JButton btnSAdd;
     private javax.swing.JButton btnSEdit;
     private javax.swing.JButton btnSRemove;
+    private javax.swing.JComboBox<String> cbClassFacility;
+    private javax.swing.JComboBox<String> cbEndTime;
     private javax.swing.JComboBox<String> cbFacilityAreaInvent;
     private javax.swing.JComboBox<String> cbMembership;
+    private javax.swing.JComboBox<String> cbStartTime;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
@@ -1342,10 +2144,15 @@ public class StaffMenuGUI extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JScrollPane jScrollPane6;
+    private javax.swing.JTabbedPane jTabbedPanel;
     private javax.swing.JLabel lblFClasses;
     private javax.swing.JLabel lblFInventory;
     private javax.swing.JLabel lblFName;
+    private javax.swing.JLabel lblItemId;
+    private javax.swing.JLabel lblItemName;
+    private javax.swing.JLabel lblItemPrice;
+    private javax.swing.JLabel lblItemQuantity;
     private javax.swing.JLabel lblMMembership;
     private javax.swing.JLabel lblMName;
     private javax.swing.JLabel lblMPassword;
@@ -1358,20 +2165,29 @@ public class StaffMenuGUI extends javax.swing.JFrame {
     private javax.swing.JLabel lblWelcome;
     private javax.swing.JPanel pDashboard;
     private javax.swing.JPanel pManageClasses;
-    private javax.swing.JTabbedPane pManageFacility;
+    private javax.swing.JPanel pManageFacility;
     private javax.swing.JPanel pManageInventory;
     private javax.swing.JPanel pManageMembers;
     private javax.swing.JPanel pManageMembership;
     private javax.swing.JPanel pManageStaff;
+    private javax.swing.JPanel panelClassSession;
     private javax.swing.JRadioButton rbtnFNoc;
     private javax.swing.JRadioButton rbtnFYesc;
     private javax.swing.JRadioButton rbtnNoi;
     private javax.swing.JRadioButton rbtnYesi;
+    private javax.swing.JSpinner spinItemQuantity;
+    private javax.swing.JSpinner spinMaxCap;
+    private javax.swing.JTable tblAreaInventory;
+    private javax.swing.JTable tblClass;
     private javax.swing.JTable tblFacility;
     private javax.swing.JTable tblMembers;
     private javax.swing.JTable tblMemberships;
     private javax.swing.JTable tblStaff;
+    private javax.swing.JTextField txtClassName;
     private javax.swing.JTextField txtFName;
+    private javax.swing.JTextField txtItemCost;
+    private javax.swing.JTextField txtItemId;
+    private javax.swing.JTextField txtItemName;
     private javax.swing.JTextField txtMName;
     private javax.swing.JTextField txtMPassword;
     private javax.swing.JTextField txtMUsername;

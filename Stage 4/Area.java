@@ -1,8 +1,4 @@
 
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 
 
@@ -28,6 +24,7 @@ public class Area {
         {
             this.inventory = new Inventory();
             this.inventoryFile = generateFile(name);
+            this.inventory.loadFromFile(this.inventoryFile);
         }
         else
         {
@@ -37,11 +34,11 @@ public class Area {
         
         if(hasClasses)
         {
-            classes = new ArrayList<>();
+            this.classes = new ArrayList<>();
         }
         else
         {
-            classes = null;
+            this.classes = null;
         }
     }
     
@@ -93,7 +90,7 @@ public class Area {
 
     public void setInventoryFile(String inventoryFile) {
         this.inventoryFile = inventoryFile;
-    }
+    }  
 
     public void setClasses(ArrayList<Class> classes) {
         this.classes = classes;

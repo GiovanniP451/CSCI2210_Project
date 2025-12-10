@@ -34,7 +34,7 @@ public class StaffLoginGUI extends javax.swing.JFrame {
         this.staffManager = sm;
         this.cardManager = ccManager;
         this.facility = facility;
-        staffManager.listStaff();
+        //staffManager.listStaff();
     }
 
     /**
@@ -56,6 +56,7 @@ public class StaffLoginGUI extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Staff Login");
+        setResizable(false);
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowOpened(java.awt.event.WindowEvent evt) {
                 formWindowOpened(evt);

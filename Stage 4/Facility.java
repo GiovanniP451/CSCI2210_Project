@@ -34,8 +34,6 @@ public class Facility {
                     continue;
                 }
                 String fName = data[0].trim();
-                //boolean hasInv = data[1].trim().equalsIgnoreCase("YES");
-                //boolean hasClass = data[2].trim().equalsIgnoreCase("YES");
                 boolean hasInv = Boolean.parseBoolean(data[1].trim());
                 boolean hasClass = Boolean.parseBoolean(data[2].trim());
                 
@@ -62,6 +60,72 @@ public class Facility {
         }
         catch(Exception e)
         {
+            return false;
+        }
+    }
+    
+    public boolean loadClasses(String fileName)
+    {
+        for(Area area : areas)
+        {
+            if(area.hasClasses() && area.getClasses() != null)
+            {
+                area.getClasses().clear();
+            }    
+        }
+        
+        File f = new File(fileName);
+        if(!f.exists())
+        {
+            return false;
+        }
+        try(BufferedReader br = new BufferedReader(new FileReader(f)))
+        {
+            String row;
+            while((row = br.readLine()) != null)
+            {
+                String[] data = row.split(",");
+                if(data.length != 5)
+                {
+                    continue;
+                }
+                
+                String name = data[0];
+                String startTime = data[1];
+                String endTime = data[2];
+                int maxCap = Integer.parseInt(data[3]);
+                String areaName = data[4];
+                
+                Area area = findArea(areaName);
+                if(area != null && area.hasClasses())
+                {
+                    Class c = new Class(name,startTime,endTime,maxCap);
+                    area.getClasses().add(c);
+                }
+            }
+            return true;
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+            return false;
+        }  
+    }
+    
+    public boolean saveClasses(String fileName, ArrayList<String> tableData)
+    {
+        try(BufferedWriter bw = new BufferedWriter(new FileWriter(fileName)))
+        {
+            for(String row : tableData)
+            {
+                bw.write(row);
+                bw.newLine();
+            }
+            return true;
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
             return false;
         }
     }
@@ -99,7 +163,7 @@ public class Facility {
         {
             a.setName(newName);
         }
-        // If inventory is True
+        // If inventory is True (false to true)
         if(!a.hasInventory() && newHasInventory)
         {
             a.setHasInventory(true);
@@ -119,7 +183,7 @@ public class Facility {
             }
         }
         
-        // If inventory is false
+        // If inventory is false (true to false)
         else if(a.hasInventory() && !newHasInventory)
         {
             a.setHasInventory(false);
@@ -127,15 +191,18 @@ public class Facility {
             a.setInventoryFile(null);
         }
         
+        //If classes is True (false to True)
         if(!a.hasClasses() && newHasClasses)
         {
-            a.setClasses(new ArrayList<>());
             a.setHasClasses(true);
+            a.setClasses(new ArrayList<>());
         }
+        
+        //if classes is false(true to false)
         else if(a.hasClasses() && !newHasClasses)
         {
-            a.setClasses(null);
             a.setHasClasses(false);
+            a.setClasses(null);
         }
         
         return true;
