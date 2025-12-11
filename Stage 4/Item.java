@@ -47,6 +47,10 @@ public class Item {
         return String.format("ID: %d | %s (x%d) - $%.2f each", id, name, quantity, price);
     }
     
+	
+	public void setName(String name) {
+    this.name = name;
+}
     @Override
     public boolean equals(Object o)
     {

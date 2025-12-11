@@ -91,11 +91,11 @@ public class Main {
         staffManager.addStaff(new Staff("Giovanni", "gio", "pass1234"));
         staffManager.addStaff(new Staff("Staff", "staff", "password"));
         
-        facility.addArea("Entrance"); // 0
-        facility.addArea("Shop"); //1
-        facility.addArea("Gym Floor"); //2
-        facility.addArea("Rest Area"); //3
-        facility.addArea("Classes"); //4
+	facility.addArea("Entrance",  false,       false); // 0
+        facility.addArea("Shop",      true,        false); // 1
+        facility.addArea("Gym Floor", true,        false); // 2
+        facility.addArea("Rest Area", false,       false); // 3
+        facility.addArea("Classes",   false,       true);  // 4
         
         facility.getAreas().get(1).getInventory().addItem(new Item(1, "Water Bottle", 20, 1.99));
         facility.getAreas().get(1).getInventory().addItem(new Item(2, "Towel", 10, 3.99));
