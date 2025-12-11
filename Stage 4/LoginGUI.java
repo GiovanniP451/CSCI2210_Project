@@ -44,6 +44,7 @@ public class LoginGUI extends javax.swing.JFrame {
         btnMemberLogin = new javax.swing.JButton();
         btnStaffLogin = new javax.swing.JButton();
         btnQuit = new javax.swing.JButton();
+        label1 = new java.awt.Label();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Login");
@@ -82,6 +83,11 @@ public class LoginGUI extends javax.swing.JFrame {
             }
         });
         jPanel1.add(btnQuit, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 260, 220, -1));
+
+        label1.setFont(new java.awt.Font("Stencil", 1, 24)); // NOI18N
+        label1.setPreferredSize(new java.awt.Dimension(150, 250));
+        label1.setText("Iron Forge!");
+        jPanel1.add(label1, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 70, -1, 20));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -148,5 +154,6 @@ public class LoginGUI extends javax.swing.JFrame {
     private javax.swing.JButton btnQuit;
     private javax.swing.JButton btnStaffLogin;
     private javax.swing.JPanel jPanel1;
+    private java.awt.Label label1;
     // End of variables declaration//GEN-END:variables
 }
