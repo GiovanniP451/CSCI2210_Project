@@ -109,7 +109,7 @@ public class Class {
     public void changeClassTime(String newStartTime, String newEndTime) {
         this.startTime = newStartTime;
         this.endTime = newEndTime;
-        System.out.println("Class " + className + " time changed to " + startTime + " - " + endTime);
+        //System.out.println("Class " + className + " time changed to " + startTime + " - " + endTime);
     }
 
     // Staff can see the roster (who is enrolled)
@@ -164,4 +164,17 @@ public class Class {
     public ArrayList<Staff> getStaff() {
         return staff;
     }
+    
+    /*===========================
+      Setters
+    */
+
+    public void setClassName(String className) {
+        this.className = className;
+    }
+
+    public void setMaxCapacity(int maxCapacity) {
+        this.maxCapacity = maxCapacity;
+    }
+    
 }

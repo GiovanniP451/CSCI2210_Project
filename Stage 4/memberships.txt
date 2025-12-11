@@ -1,2 +1,3 @@
 Basic,19.99
-Premium, 49.99
+Premuim,39.99
+Ultra,99.99

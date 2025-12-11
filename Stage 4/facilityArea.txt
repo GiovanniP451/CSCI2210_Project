@@ -1,4 +1,4 @@
 Gym Floor,true,true
 Shop,true,false
-Resting Area,false,false
-Test Area,true,false
+Resting Area,false,true
+Weight Room,false,true
