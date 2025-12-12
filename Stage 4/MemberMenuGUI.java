@@ -207,7 +207,7 @@ private boolean isValidCardInput(String number, String holder, String expiry) {
     model.setRowCount(0);
 
     Inventory shopInventory = facility.findArea("Shop").getInventory();
-    for (Item item : shopInventory.getItems()) { // :contentReference[oaicite:5]{index=5}
+    for (Item item : shopInventory.getItems()) { // 
         model.addRow(new Object[]{
             item.getId(),
             item.getName(),
@@ -863,7 +863,7 @@ private boolean isValidCardInput(String number, String holder, String expiry) {
             loggedMember.getUsername()
         );
 
-        // Save (or update, depending on how your CreditCardManager handles duplicates)
+        // Save (or update)
         ccManager.removeCard(loggedMember);
         ccManager.addCard(loggedMember, newCard);
 
@@ -894,6 +894,7 @@ private boolean isValidCardInput(String number, String holder, String expiry) {
         return;
     }
 
+    //Enter in the required quanity for the item. 
     int qtyWanted;
     try {
         qtyWanted = Integer.parseInt(txtShopQty.getText().trim());
@@ -902,30 +903,35 @@ private boolean isValidCardInput(String number, String holder, String expiry) {
         return;
     }
 
+    //Error catch the code to display error message when the quanity is less than one.
     if (qtyWanted <= 0) {
         javax.swing.JOptionPane.showMessageDialog(this, "Quantity must be at least 1.");
         return;
     }
 
+    //Put the interger, in the row to display. 
     int itemId = Integer.parseInt(jTable1.getValueAt(row, 0).toString());
 
+    //bring in the inventory from the staff membership menu.
     Inventory shopInv = getShopInventory();
     if (shopInv == null) {
         javax.swing.JOptionPane.showMessageDialog(this, "Shop inventory not found.");
         return;
     }
 
-    Item invItem = shopInv.findItemByID(itemId); // :contentReference[oaicite:4]{index=4}
+    Item invItem = shopInv.findItemByID(itemId);
     if (invItem == null) {
         javax.swing.JOptionPane.showMessageDialog(this, "Item not found.");
         return;
     }
 
+    //method to get quantity.
     if (qtyWanted > invItem.getQuantity()) {
         javax.swing.JOptionPane.showMessageDialog(this, "Not enough stock.");
         return;
     }
 
+    //current 
     int current = cart.getOrDefault(invItem, 0);
     cart.put(invItem, current + qtyWanted);
 
@@ -1009,7 +1015,7 @@ private boolean isValidCardInput(String number, String holder, String expiry) {
         return;
     }
 
-    // These checks match your Class.register rules
+    //Check the rules for the Class file. 
     if (!c.isScheduled()) {
         javax.swing.JOptionPane.showMessageDialog(this, "That class is not scheduled yet.");
         return;
@@ -1019,7 +1025,7 @@ private boolean isValidCardInput(String number, String holder, String expiry) {
         return;
     }
 
-    boolean ok = c.register(loggedMember); // uses your existing logic
+    boolean ok = c.register(loggedMember); // uses existing logic
     if (!ok) {
         javax.swing.JOptionPane.showMessageDialog(this, "Could not attend (maybe already enrolled).");
         return;
@@ -1033,22 +1039,7 @@ private boolean isValidCardInput(String number, String holder, String expiry) {
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
-            logger.log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
+        
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> new MemberMenuGUI().setVisible(true));
