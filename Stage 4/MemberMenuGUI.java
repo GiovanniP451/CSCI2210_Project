@@ -7,6 +7,7 @@ import javax.swing.table.DefaultTableModel;
 import java.util.Map;
 public class MemberMenuGUI extends javax.swing.JFrame {
     
+    //bring in information and call method from other classes for the program.
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(MemberMenuGUI.class.getName());
     private CreditCardManager ccManager;
     private MembershipManager membershipManager;
@@ -24,6 +25,7 @@ public class MemberMenuGUI extends javax.swing.JFrame {
         
     }
     
+    //constructor to refresh information, update and a welcome message for the user.
     public MemberMenuGUI(Member member, MemberManager memberManager,MembershipManager membershipManager,CreditCardManager ccManager,Facility facility)
     {
         this();
@@ -33,11 +35,11 @@ public class MemberMenuGUI extends javax.swing.JFrame {
         this.ccManager = ccManager;
         this.facility = facility;
         lblWelcome.setText("Welcome " + member.getName() + " to the Member Portal");
-        loadMemberInfo();
+        loadMemberInfo(); //bring in member information.
         initMembershipComboBox();
-        refreshMembershipDisplay();
-        loadSavedCardIntoFields();
-        loadShopTable();
+        refreshMembershipDisplay(); //refresh for refresh buttons. 
+        loadSavedCardIntoFields(); //bring in information for saved credit card information.
+        loadShopTable(); //populate the shop table  
         refreshCartDisplay();
     }
     
@@ -45,6 +47,7 @@ public class MemberMenuGUI extends javax.swing.JFrame {
     lblInfoName.setText(loggedMember.getName());
     lblInfoUsername.setText(loggedMember.getUsername());
 
+    //get current membership for the member to display. 
     if (loggedMember.getMembership() != null) {
         lblInfoMembership.setText(loggedMember.getMembership().getType());
     } else {
@@ -58,7 +61,8 @@ public class MemberMenuGUI extends javax.swing.JFrame {
             lblInfoCard.setText("(None)");
         }
     }
-
+    
+    //Method to display and add membership status of member. 
     private void initMembershipComboBox() {
     cmbMemberships.removeAllItems();
 
@@ -68,10 +72,11 @@ public class MemberMenuGUI extends javax.swing.JFrame {
         cmbMemberships.addItem(m.getType());
     }
 }
-
+    //Method to select the membership with fail conditions. 
     private Membership getSelectedMembership() {
         if (membershipManager == null) return null;
 
+        //return null to avoid error.
         String selectedType = (String) cmbMemberships.getSelectedItem();
         if (selectedType == null) return null;
 
@@ -82,7 +87,8 @@ public class MemberMenuGUI extends javax.swing.JFrame {
         }
         return null;
     }
-
+    
+    //refresh the display information, returns None if the member does not have a current membership for errors.
     private void refreshMembershipDisplay() {
         // show current membership
         if (loggedMember != null && loggedMember.getMembership() != null) {
@@ -100,6 +106,7 @@ public class MemberMenuGUI extends javax.swing.JFrame {
         }
     }
     
+    //Load in the cards information saved.
     private void loadSavedCardIntoFields() {
     if (loggedMember == null || ccManager == null) return;
 
@@ -111,17 +118,42 @@ public class MemberMenuGUI extends javax.swing.JFrame {
         txtExpiry.setText("");
         return;
     }
-
+    
+    //methods to call the getters. 
     txtCardNumber.setText(saved.getCardNumber());
     txtCardHolder.setText(saved.getCardHolderName());
     txtExpiry.setText(saved.getExpiryDate());
 
     lblCardStatus.setText("Saved card: " + saved.toString()); // masked display
 }
+    
+    private void saveMembersToFile() {
+    if (memberManager == null) return;
 
+    java.util.ArrayList<String> lines = new java.util.ArrayList<>();
+
+    for (Member m : memberManager.getMembers()) {
+        String membership = "Basic"; // default
+        if (m.getMembership() != null) {
+            membership = m.getMembership().getType();
+        }
+
+        lines.add(
+            m.getName() + "," +
+            m.getUsername() + "," +
+            m.getPassword() + "," +
+            membership
+        );
+    }
+
+    memberManager.saveMemberFile("members.txt", lines);
+}
+
+    //double check to make sure that the card information is put correctly. 
 private boolean isValidCardInput(String number, String holder, String expiry) {
     if (number == null || holder == null || expiry == null) return false;
 
+    //trim methods to avoid whitespaces. 
     number = number.trim();
     holder = holder.trim();
     expiry = expiry.trim();
@@ -132,20 +164,24 @@ private boolean isValidCardInput(String number, String holder, String expiry) {
         if (!Character.isDigit(number.charAt(i))) return false;
     }
 
+    //make sure that the fields have something. 
     if (holder.isEmpty()) return false;
 
     // MM/YY
     if (!expiry.matches("\\d{2}/\\d{2}")) return false;
 
+    //finally return true if all the other methods do not display an error or fault.
     return true;
 }
 
+    //make error catch if program does not have a current facility.
     private Inventory getShopInventory() {
         if (facility == null) {
         javax.swing.JOptionPane.showMessageDialog(this, "Facility is null (not passed into MemberMenuGUI).");
         return null;
     }
-
+     
+    // methods for error catching to find an area or facility called "Shop" 
     Area shop = facility.findArea("Shop");
     if (shop == null) {
         StringBuilder sb = new StringBuilder("Shop area not found.\nAreas loaded:\n");
@@ -155,10 +191,11 @@ private boolean isValidCardInput(String number, String holder, String expiry) {
         javax.swing.JOptionPane.showMessageDialog(this, sb.toString());
         return null;
     }
-
+    
+    //return the inventory currently in shop. 
     return shop.getInventory();
 }
-    
+    //display the shop table and populate. 
     private void loadShopTable() {
         
     Inventory shopInv = getShopInventory();
@@ -177,6 +214,7 @@ private boolean isValidCardInput(String number, String holder, String expiry) {
         });
     }
 }
+    //load the avaliable classes from the staff management menu. 
     private void loadAvailableClassesTable() {
     if (facility == null) return;
 
@@ -205,11 +243,12 @@ private boolean isValidCardInput(String number, String holder, String expiry) {
         }
     }
 }
-    
+    //get the classes currently in the table. 
     private Class getSelectedClassFromTable() {
     int row = tblAvailableClasses.getSelectedRow();
     if (row < 0) return null;
 
+    //get the information displayed in the table from staff memebrship menu. 
     String className = tblAvailableClasses.getValueAt(row, 0).toString();
     String start     = tblAvailableClasses.getValueAt(row, 1).toString();
     String end       = tblAvailableClasses.getValueAt(row, 2).toString();
@@ -228,6 +267,8 @@ private boolean isValidCardInput(String number, String holder, String expiry) {
     return null;
 }
     
+    //refresh the current cart that is being displayed in the table if any more
+    //items are added.
     private void refreshCartDisplay() {
     double total = 0.0;
     StringBuilder sb = new StringBuilder();
@@ -784,6 +825,7 @@ private boolean isValidCardInput(String number, String holder, String expiry) {
 
     // Assign membership
     loggedMember.setMembership(selected);
+    saveMembersToFile();
 
     javax.swing.JOptionPane.showMessageDialog(
             this,
