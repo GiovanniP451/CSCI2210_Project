@@ -1395,7 +1395,7 @@ public class StaffMenuGUI extends javax.swing.JFrame {
             if(result == JOptionPane.YES_OPTION)
             {
                 model.removeRow(row);
-                ArrayList<String> tableData = getTableData(model);
+                ArrayList<String> tableData = getStaffTableData(model);
                 staffManager.saveStaffFile("staff.txt", tableData);
                 JOptionPane.showMessageDialog(this,"Staff Delected Successfully from File");
             }
