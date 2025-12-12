@@ -43,7 +43,6 @@ public class MemberLoginGUI extends javax.swing.JFrame {
         lblMPassword = new javax.swing.JLabel();
         txtMUsername = new javax.swing.JTextField();
         btnMLogin = new javax.swing.JButton();
-        btnMSignup = new javax.swing.JButton();
         lblMTitle = new javax.swing.JLabel();
         pfMPassword = new javax.swing.JPasswordField();
 
@@ -76,15 +75,6 @@ public class MemberLoginGUI extends javax.swing.JFrame {
             }
         });
         getContentPane().add(btnMLogin, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 250, 200, -1));
-
-        btnMSignup.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        btnMSignup.setText("Sign Up");
-        btnMSignup.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnMSignupActionPerformed(evt);
-            }
-        });
-        getContentPane().add(btnMSignup, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 320, -1, -1));
 
         lblMTitle.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         lblMTitle.setText("Member Login");
@@ -127,10 +117,6 @@ public class MemberLoginGUI extends javax.swing.JFrame {
         
     }//GEN-LAST:event_btnMLoginActionPerformed
 
-    private void btnMSignupActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMSignupActionPerformed
-        
-    }//GEN-LAST:event_btnMSignupActionPerformed
-
     /**
      * @param args the command line arguments
      */
@@ -159,7 +145,6 @@ public class MemberLoginGUI extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnMLogin;
-    private javax.swing.JButton btnMSignup;
     private javax.swing.JLabel lblMPassword;
     private javax.swing.JLabel lblMTitle;
     private javax.swing.JLabel lblMUsername;
