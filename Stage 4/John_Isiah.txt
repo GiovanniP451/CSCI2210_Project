@@ -1,0 +1,9 @@
+What I did for this Stage was:
+LoginGUI - I created a simple menu with the three buttons to lead to the other menus and to close the program
+MemberLoginGUI - Created a simple menu for members to login into that will lead them to the MemberMenuGUI form
+MemberMenuGUI - Only created the placerholder( Gio did this, editing, adding components to it)
+StaffMenuGUI - I did this menu, where I did the tabbed pane with the different managmenet systems
+Inventory - added the methods to load and save to the inventory files
+StaffManager - added methods to load and save to the Staff Files
+MemberManager - added methods to load and save to the Member Files
+Facility - added methods to load and save to the Classes File and the Facility Areas files
