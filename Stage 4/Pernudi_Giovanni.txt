@@ -1,0 +1,13 @@
+What I have accomplished
+- Completed the classes assigned in Stage 1 and more.
+- Completed the Member Menu GUI and all the tabs associated with it. 
+- My Information tab
+- Membership tab
+- Saved Payment tab
+- Shop tab
+- Class tab
+- Documentation for tabs listed
+- Corrections made to main file
+- Corrections made to item file
+- User Guide pdf
+- Testing and Troublshooting files
