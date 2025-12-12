@@ -1593,9 +1593,11 @@ public class StaffMenuGUI extends javax.swing.JFrame {
             inv.addItem(item);
             
             DefaultTableModel model = (DefaultTableModel)tblAreaInventory.getModel();
+            model.addRow(new Object[]{id,name,quantity,cost});
             
             ArrayList<String> tableData = getAreaInventoryTableData(model);
             inv.saveToFile(a.getInventoryFile(), tableData);
+            JOptionPane.showMessageDialog(this, "Saved Item to " + a + " inventory");
             
             loadInventoryTable();
         }
@@ -1670,6 +1672,7 @@ public class StaffMenuGUI extends javax.swing.JFrame {
         
         ArrayList<String> tableData = getAreaInventoryTableData(model);
         inv.saveToFile(area.getInventoryFile(), tableData);
+        JOptionPane.showMessageDialog(this, "Item Updated");
     }//GEN-LAST:event_btnEditItemActionPerformed
 
     private void tblAreaInventoryMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblAreaInventoryMouseClicked
