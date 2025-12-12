@@ -1460,7 +1460,11 @@ public class StaffMenuGUI extends javax.swing.JFrame {
             cbFacilityAreaInvent.addItem("None");
             for(Area a : facility.getAreas())
             {
-                cbFacilityAreaInvent.addItem(a.getName());
+                if(a.hasInventory())
+                {
+                    cbFacilityAreaInvent.addItem(a.getName());
+                }
+                //cbFacilityAreaInvent.addItem(a.getName());
             }
             
             cbClassFacility.removeAllItems();
