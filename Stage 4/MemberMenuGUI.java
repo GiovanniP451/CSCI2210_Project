@@ -3,6 +3,7 @@
  *
  * @author 
  */
+import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
 import java.util.Map;
 public class MemberMenuGUI extends javax.swing.JFrame {
@@ -15,6 +16,7 @@ public class MemberMenuGUI extends javax.swing.JFrame {
     private Member loggedMember;
     private MemberManager memberManager;
     private Login myObject;
+    private Inventory inventory;
     private java.util.LinkedHashMap<Item, Integer> cart = new java.util.LinkedHashMap<>();
     
     /**
@@ -973,7 +975,23 @@ private boolean isValidCardInput(String number, String holder, String expiry) {
     cart.clear();
     refreshCartDisplay();
     loadShopTable();
-
+    //
+    DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+    Area a = facility.findArea("Shop");
+    Inventory inv = a.getInventory();
+    ArrayList<String> tableData = new ArrayList<>();
+        for(int i = 0; i < model.getRowCount(); i++)
+        {
+            String itemId = model.getValueAt(i, 0).toString();
+            String itemName = model.getValueAt(i, 1).toString();
+            String itemQuantity = model.getValueAt(i, 2).toString();
+            String itemCost = model.getValueAt(i, 3).toString();
+            
+            String row = (itemId + "," + itemName + "," + itemQuantity + "," + itemCost);
+            tableData.add(row);
+        }
+    inv.saveToFile(a.getInventoryFile(), tableData);
+    //
     javax.swing.JOptionPane.showMessageDialog(this, "Purchase successful!");
     }//GEN-LAST:event_btnCheckoutActionPerformed
 
