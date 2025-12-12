@@ -40,6 +40,7 @@ public class StaffMenuGUI extends javax.swing.JFrame {
         initMembershipComboBox();
         initFacilityInventoryComboBox();
         initClassComboBox();
+        spinMaxCap.setValue(0);
     }
     
     public void initMembershipComboBox()
@@ -521,6 +522,8 @@ public class StaffMenuGUI extends javax.swing.JFrame {
 
         jLabel5.setText("Max Capacity");
 
+        spinMaxCap.setModel(new javax.swing.SpinnerNumberModel(0, 0, null, 1));
+
         jLabel6.setText("Location");
 
         btnClassAdd.setText("Add");
@@ -744,6 +747,11 @@ public class StaffMenuGUI extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        tblStaff.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblStaffMouseClicked(evt);
+            }
+        });
         jScrollPane3.setViewportView(tblStaff);
 
         javax.swing.GroupLayout pManageStaffLayout = new javax.swing.GroupLayout(pManageStaff);
@@ -837,6 +845,8 @@ public class StaffMenuGUI extends javax.swing.JFrame {
         lblItemId.setText("Item Id");
 
         lblItemQuantity.setText("Item Quantity");
+
+        spinItemQuantity.setModel(new javax.swing.SpinnerNumberModel(0, 0, null, 1));
 
         lblItemPrice.setText("Item Cost");
 
@@ -1810,6 +1820,12 @@ public class StaffMenuGUI extends javax.swing.JFrame {
                     newArea.getClasses().add(editing);
                 }
             }
+            
+            model.setValueAt(newClassName,row, 0);
+            model.setValueAt(newStartTime,row,1);
+            model.setValueAt(newEndTime,row,2);
+            model.setValueAt(newMaxCap,row,3);
+            model.setValueAt(newAreaName,row,4);
         
             ArrayList<String> tableData = getClassTableData(model);
             if(facility.saveClasses("classes.txt", tableData))
@@ -1818,6 +1834,7 @@ public class StaffMenuGUI extends javax.swing.JFrame {
             }
         
             loadClassTable();
+            
         }
         catch(Exception e)
         {
@@ -1899,6 +1916,21 @@ public class StaffMenuGUI extends javax.swing.JFrame {
             }    
         }
     }//GEN-LAST:event_btnClassRemoveActionPerformed
+
+    private void tblStaffMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblStaffMouseClicked
+        int row = tblStaff.getSelectedRow();
+        if(row<0){
+            return;
+        }
+        
+        String staffName = tblStaff.getValueAt(row, 0).toString();
+        String staffUsername = tblStaff.getValueAt(row,1).toString();
+        String staffPassword = tblStaff.getValueAt(row,2).toString();
+        
+        txtSName.setText(staffName);
+        txtSUsername.setText(staffUsername);
+        txtSPassword.setText(staffPassword);
+    }//GEN-LAST:event_tblStaffMouseClicked
     
     private ArrayList<String> getTableData(DefaultTableModel model)
     {
